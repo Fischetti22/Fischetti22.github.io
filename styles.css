@@ -10,13 +10,13 @@ h1 {
 
 .assign {
     background-color: floralwhite;
+    display: flex;
     margin: 30px;
     padding: 30px;
     width: 200px;
-    display: flex;
 }
 
 .assign img {
-    width: 300px;
     padding: 10px;
+    width: 300px;
 }
