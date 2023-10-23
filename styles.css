@@ -1,21 +1,27 @@
 body {
     background-color: lightgray;
     font-family: 'Times New Roman', Times, serif;
+    text-align: center; /* Center-align the entire page content */
 }
 
 h1 {
     color: black;
-    text-align: center;
 }
 
 .assign {
     background-color: floralwhite;
     display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    align-items: center; /* Center-align the elements horizontally */
     margin: 10px;
     padding: 10px;
+    max-width: 600px; /* Limit the maximum width of the content */
+    border: 1px solid #ccc;
+    border-radius: 10px;
 }
 
 .assign img {
     padding: 10px;
     width: 200px;
+    max-width: 100%; /* Ensure images don't exceed their container width */
 }
