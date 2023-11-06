@@ -1,5 +1,5 @@
 body {
-    background-color: lightgray;
+    background-color: #BD64FF;
     font-family: 'Times New Roman', Times, serif;
     text-align: center; /* Center-align the entire page content */
 }
@@ -9,7 +9,7 @@ h1 {
 }
 
 .assign {
-    background-color: floralwhite;
+    background-color: #A5AA7B;
     display: flex;
     flex-direction: column; /* Stack elements vertically */
     align-items: center; /* Center-align the elements horizontally */
