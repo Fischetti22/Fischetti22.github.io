@@ -7,6 +7,9 @@ body {
 h1 {
     color: black;
 }
+a {
+    text-decoration: none;
+    color: black;
 
 .assign {
     background-color: #A5AA7B;
@@ -16,8 +19,9 @@ h1 {
     margin: 10px;
     padding: 10px;
     max-width: 600px; /* Limit the maximum width of the content */
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
     border-radius: 10px;
+    border-color: #F0FF63;
 }
 
 .assign img {
