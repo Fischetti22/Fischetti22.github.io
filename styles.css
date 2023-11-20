@@ -14,7 +14,7 @@ a {
 
 .assign {
     background-color: #A5AA7B;
-    display: flex;
+    display: block;
     flex-direction: column; /* Stack elements vertically */
     align-items: center; /* Center-align the elements horizontally */
     margin: 10px;
