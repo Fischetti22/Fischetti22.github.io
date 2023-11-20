@@ -9,13 +9,13 @@ body {
 h1 {
     color: black;
     text-align: center;
-    width: 100%;
+    width: 200%;
     display: block;
 }
 h1:hover {
     color: black;
     text-align: center;
-    width: 100%;
+    width: 200%;
     display: block;
 }
 a {
