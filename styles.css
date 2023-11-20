@@ -2,7 +2,7 @@ body {
     background-color: #BD64FF;
     font-family: 'Times New Roman', Times, serif;
     text-align: center; /* Center-align the entire page content */
-    display: flex;
+    display: block;
     flex-wrap: wrap;
 }
 
