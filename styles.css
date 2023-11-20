@@ -8,6 +8,15 @@ body {
 
 h1 {
     color: black;
+    text-align: center;
+    width: 100%;
+    display: block;
+}
+h1:hover {
+    color: black;
+    text-align: center;
+    width: 100%;
+    display: block;
 }
 a {
     text-decoration: none;
@@ -26,6 +35,7 @@ a {
     border: 5px solid #ccc;
     border-radius: 10px;
     border-color: #F0FF63;
+    box-shadow: 8px 8px #F0FF63;
 }
 
 .assign img {
