@@ -20,7 +20,7 @@ a {
     margin: 10px;
     padding: 10px;
     max-width: 600px; /* Limit the maximum width of the content */
-    border: 2px solid #ccc;
+    border: 5px solid #ccc;
     border-radius: 10px;
     border-color: #F0FF63;
 }
