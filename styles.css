@@ -12,8 +12,9 @@ h1 {
 
 .content-container {
   display: flex;
-  flex-direction: column; /* Stack items vertically */
-  align-items: center; /* Align items to the center */
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 1200px; /* Adjust as needed for overall container width */
   margin: auto;
 }
 
@@ -23,7 +24,7 @@ h1 {
   padding: 10px;
   border-radius: 20px;
   border-color: #F0FF63;
-  width: 80%; /* Adjust the width as needed */
+  width: calc(33.333% - 20px); /* For 3 sections per row */
   box-shadow: 8px 8px brown;
   display: flex;
   flex-direction: column;
