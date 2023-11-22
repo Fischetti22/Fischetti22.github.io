@@ -1,42 +1,45 @@
 body {
- background-color:  #BD64FF;
- font-family:'Times New Roman', Times, serif;
- text-align: center; /* Center-align the entire page content */
- display: flex;
- flex-wrap: wrap;
+  background-color: #BD64FF;
+  font-family: 'Times New Roman', Times, serif;
+  text-align: center;
 }
+
 h1 {
- color: black;
- text-align: center;
- width: 100%;
- display: block;
+  color: black;
+  text-align: center;
+  width: 100%;
 }
-h1:hover {
- color: black;
- text-align: center;
- width: 100%;
- display: block;
+
+.content-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
-a {
- text-decoration: none;
- color: black;
-}
+
 .assign {
- background-color:  #A5AA7B;
- margin: 10px;
- padding: 10px;
- border-radius: 20px;
-border-color: #F0FF63;
- width: 20%;
- box-shadow: 8px 8px brown;
- display: block; /* instead of flex */
+  background-color: #A5AA7B;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 20px;
+  border-color: #F0FF63;
+  width: 20%;
+  box-shadow: 8px 8px brown;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
 .assign img {
- width: 200px;
- margin: 10px;
- border: 2px solid midnightblue;
+  width: 200px;
+  margin: 10px;
+  border: 2px solid midnightblue;
 }
+
 .assign img:hover {
- width: 200px;
- margin: 10px;
- border: 2px dotted yellow;
+  border: 2px dotted yellow;
+}
+
+.assign-det {
+  text-align: left;
+  width: 100%;
+}
