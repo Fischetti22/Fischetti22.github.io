@@ -14,7 +14,7 @@ h1 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  max-width: 1200px; /* Adjust as needed for overall container width */
+  max-width: 1200px; /* Adjust as needed */
   margin: auto;
 }
 
@@ -24,7 +24,7 @@ h1 {
   padding: 10px;
   border-radius: 20px;
   border-color: #F0FF63;
-  width: calc(33.333% - 20px); /* For 3 sections per row */
+  width: calc(33.333% - 20px); /* Adjust width for 3 sections per row */
   box-shadow: 8px 8px brown;
   display: flex;
   flex-direction: column;
@@ -33,7 +33,7 @@ h1 {
 
 .assign img {
   width: 100%;
-  max-width: 200px; /* Adjust as needed */
+  max-width: 200px;
   margin: 10px auto;
   border: 2px solid midnightblue;
 }
