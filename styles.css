@@ -22,7 +22,7 @@ h1 {
   padding: 10px;
   border-radius: 20px;
   border-color: #F0FF63;
-  width: 20%;
+  width: calc(33% - 20px); /* Adjust width for 3 in a row */
   box-shadow: 8px 8px brown;
   display: flex;
   flex-direction: column;
