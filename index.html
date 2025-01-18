@@ -1,116 +1,450 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title> CSCE 190: Pedro Fischetti </title>
-  <link rel = "stylesheet" href ="styles.css" />
+  <meta charset="UTF-8" />
+  <title>CSCE 190: Pedro Fischetti</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
-  <body> 
-  <h1> Pedro Fischetti </h1>
-    
-    <div class="flex-container">
+<body>
+  <h1>Pedro Fischetti</h1>
+
+  <div class="flex-container">
+
+    <!-- Example "assign" section #1 -->
     <section class="assign">
-      <img src="/IMG_0004.jpg"/>
+      <img src="IMG_0004.jpg" alt="Some image here" />
       <div class="assign-det">
-        <h2> Problem Statement: Teachers are not getting compensated!! </h2>
-          <p> Children of united states today are on a decline of education due to the wages of teachers being so low.
+        <h2>Problem Statement: Teachers are not getting compensated!!</h2>
+        <p>
+          Children of the United States today are on a decline of education due to the wages of teachers being so low.
+          <br><br>
+          <strong>Who is experiencing the problem?</strong> Our everyday youth and young adults of America.
+          <br><br>
+          <strong>What is the problem?</strong> Education is a must in todays world—the last thing we need is teachers not getting compensated the wages they deserve.
+          <br><br>
+          <strong>Where does the problem present itself?</strong> Year-after-year surveys of our elementary, middle, and high schoolers show math and reading scores dropping.
+          <br><br>
+          <strong>Why does it matter?</strong> If we don’t come together to stand up for our teachers and educators, what will education be in the next 10 years?
+        </p>
+      </div>
+    </section>
 
-Who is experiencing the problem? Our everyday youth and young adults of America.
+    <!-- Example "assign" section #2 -->
+    <section class="assign">
+      <img src="Affinity Diagram 1.png" alt="Affinity Diagram" />
+      <div class="assign-det">
+        <a href="Affinity Diagram.pdf"><h2>Affinity diagram: [How Can We Improve Teaching Around the World?]</h2></a>
+        <p>
+          <span style="color:#0066cc;">Introducing EduBoost: The Ultimate Teaching Companion</span><br>
+          EduBoost is a groundbreaking app designed to empower teachers and supercharge student productivity simultaneously. 
+          ... [Your text continues here]
+        </p>
+      </div>
+    </section>
 
-What is the problem? Education being such a must in todays world the last thing we need is teachers not getting compensated the wages they deserve
+    <!-- Repeat more sections as needed, e.g. Personas, Storyboard, etc. -->
 
-Where does the problem present themselves? After a year after year survey of our elementary, middle, and high schoolers math and reading scores dropping.
+  </div> <!-- end of .flex-container -->
 
-Why does it matter? If we don’t come together to stand up for our teachers and educators what will education be in the next 10 years? </p>
+  <!-- =========================================
+       QUIZ SECTION (the code from your game)
+       ========================================= -->
+  <header>IV Therapy Interactive Game</header>
+  <main id="main-content" style="display:none; max-width:900px; margin: 0 auto;">
+    <!-- Admin login button / scoreboard toggler -->
+    <div style="text-align:right; margin-bottom:10px;">
+      <button onclick="adminLogin()">Admin Login</button>
+    </div>
+
+    <div id="scoreBoard">
+      <strong>Score:</strong> <span id="score">0</span>
+      <br/>
+      <strong>Player:</strong> <span id="playerName"></span>
+    </div>
+    <div id="timer">Time Left: 60s</div>
+
+    <!-- Q1 -->
+    <div class="question active" id="q1">
+      <h2>Question 1: What are common sites to avoid when starting an IV? (Select all that apply)</h2>
+      <img src="iv_placement.jpeg" 
+           alt="IV Placement Guide" 
+           style="max-width:100%; height:auto; margin-bottom:15px;">
+      <form id="q1-form">
+        <div class="options">
+          <label><input type="checkbox" name="answer" value="correct1">Extremities with an AV Fistula, graft, or known clot</label><br/>
+          <label><input type="checkbox" name="answer" value="correct2">Extremity affected by stroke, radiation therapy, or lymphedema</label><br/>
+          <label><input type="checkbox" name="answer" value="correct3">Areas of flexion, lower extremity, or open wounds</label><br/>
+          <label><input type="checkbox" name="answer" value="incorrect">A vein in the non-dominant arm</label><br/>
+          <label><input type="checkbox" name="answer" value="incorrect">Veins on the dorsal and ventral surfaces of the upper extremitites.</label><br/>
+          <label><input type="checkbox" name="answer" value="correct4">Veins in an upper extremity on the side of breast surgery</label>
         </div>
-    </section>
-      <!-- Affinity diagram assignment -->
-        <div class="flex-container">
- <section class="assign">
-<img src="/Affinity Diagram 1.png" />
-<div class="assign-det">
-<a href="/Affinity Diagram.pdf"><h2>Affinity diagram: [How Can We improve Teachers Around the World?]</h2></a>
-<p>
-<div style="text-align:center;">
-   <span style="font-size: 13px; color:#0066cc;">Introducing EduBoost: The Ultimate Teaching Companion</span>
-   <span style="font-size: 13px; color:#009933;">EduBoost is a groundbreaking app designed to empower teachers and supercharge student productivity simultaneously. With EduBoost, educators can unlock new financial opportunities while fostering an environment that inspires students to excel.</span>
-   <span style="font-size: 13px; color:#3005EB;">🚧 While still in production, here are some of our current ideas!</span>
-   <span style="font-size: 13px; color:#3005EB;">✨💡 Exciting Features:</span>
-   <span style="font-size: 13px; color:#3005EB;">- 📈 Boost Your Income: EduBoost offers teachers a platform to create and sell educational content, lesson plans, and resources to a global audience. Earn extra income while sharing your expertise.</span>
-   <span style="font-size: 13px; color:#3005EB;">- 💡 Personalized Insights: Get actionable insights into your teaching methods and student performance. Identify areas for improvement and enhance your teaching strategies.</span>
-   <span style="font-size: 13px; color:#3005EB;">- 📚 Resource Library: Access a vast library of teaching materials, saving you time and effort in lesson planning. Customize and adapt resources to suit your unique teaching style.</span>
-   <span style="font-size: 13px; color:#3005EB;">- 🚀 Academic Excellence: EduBoost provides students with tools to stay organized, set goals, and track their progress. Achieve academic success through a structured and motivating environment.</span>
-   <span style="font-size: 13px; color:#3005EB;">- 📖 Interactive Learning: Engage with interactive lessons, quizzes, and study guides. Collaborate with peers and access a wealth of educational content tailored to your needs.</span>
-   <span style="font-size: 13px; color:#3005EB;">- 🌟 Gamified Rewards: Stay motivated with a rewarding gamified system. Earn points, badges, and incentives for achieving milestones and academic excellence.</span>
-   <span style="font-size: 13px; color:#3005EB;">Join the EduBoost community and experience a revolution in education, where everyone thrives!</span>
- </div>
-    </section>
+        <button type="button" onclick="checkAnswers('q1','q2')">Submit</button>
+      </form>
+      <div id="feedback1" class="feedback"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="question" id="q2">
+      <h2>Question 2: What is the appropriate catheter gauge for rapid fluid replacement?</h2>
+      <div class="options">
+        <button onclick="handleClick('q2','q3', true)">16-20</button>
+        <button onclick="handleClick('q2','q3', false)">20-24</button>
+        <button onclick="handleClick('q2','q3', false)">24-28</button>
+      </div>
+      <div id="feedback2" class="feedback"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="question" id="q3">
+      <h2>Choose the correct sites to start a peripheral IV</h2>
+      <img src="periphal.jpeg"
+           alt="IV Diagram"
+           usemap="#iv-map"
+           width="1800"
+           height="1200"
+           style="display:block; max-width:100%; height:auto; margin:0 auto;">
+      <map name="iv-map">
+        <area shape="circle" coords="450,600,90" alt="Correct Vein" onclick="showFeedback(true, 'q3', 'q4')" />
+        <area shape="circle" coords="900,1200,90" alt="Wrong Vein" onclick="showFeedback(false, 'q3', 'q4')" />
+      </map>
+      <div id="feedback3" class="feedback"></div>
+    </div>
+
+    <!-- Q4 (Drag & Drop) -->
+    <div class="question" id="q4">
+      <h2>Question 4: Place the catheter gauge size from smallest to largest</h2>
+      <p><em>Hint: bigger gauge number = smaller diameter. So 24 is smallest, 18 largest.</em></p>
+      <ul id="draggable-list">
+        <li draggable="true" data-value="24">24</li>
+        <li draggable="true" data-value="22">22</li>
+        <li draggable="true" data-value="20">20</li>
+        <li draggable="true" data-value="18">18</li>
+      </ul>
+      <button onclick="checkOrder('q4','finalMessage')">Submit Order</button>
+      <div id="feedback4" class="feedback"></div>
+    </div>
+
+    <!-- Final Message -->
+    <div id="finalMessage">
+      <h2>Congratulations!</h2>
+      <p>Your final score is: <strong><span id="finalScore"></span></strong></p>
+      <p><button onclick="submitToLeaderboard()">Submit Score to Leaderboard</button></p>
+    </div>
+
+    <!-- Admin Section: Leaderboard -->
+    <div id="adminSection">
+      <h2>Leaderboard</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Player</th>
+            <th>Score</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboardBody"></tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Opener Screen Button (the "Start Game" prompt) -->
+  <div class="opener" id="opener" style="display:block;">
+    <img src="prisma-health-2-1.jpg" alt="IV Therapy Kahoot Challenge">
+    <h1>IV Therapy Challenge</h1>
+    <p>Welcome to the IV Therapy Interactive Game</p>
+    <button onclick="promptUsername()">Start Game</button>
+  </div>
 
 
-<!-- Personas assignment -->
-   <div class="flex-container">
-     <section class="assign">
-     <img src= "/IMG_00001.jpeg" />
-     <div class="assign-det">>
-       <a href="/PersonaMerge.pdf"><h2>Team Personas: [Together we Educate!] </h2> </a>
-       <p> 
-         Billy the kid was born in south carolina and a hard working teacher trying to release his new app that allows teachers to work together to make life for teachers easier.
-       </p>
-     </div>
-    </section>
+  <!-- ============= FIREBASE (ES MODULE) ============= -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      query,
+      orderBy
+    } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-     <!-- Storyboard assignment -->
-     <div class="flex-container">
-<section class="assign">
-<img src="/Storyboardimg.jpg" />
-<section class="assign-det">
-<a href="/Storyboard2.pdf"><h2>Team Storyboards: [EduBOOST Going Live!]</h2></a>
-<p>
-[This scenerio you can see teachers and students get frustrated in class due to the lack of help with education. You then see teachers gathering together to create something. They then announce it to their class, which then you see at the last slide the great result of happiness and striaght A's]
-</p>
-</section>
- </div>
-    </section>
+    const firebaseConfig = {
+      /* Your Firebase Config */
+      apiKey: "AIzaSy...nig",
+      authDomain: "iv-therapy-game.firebaseapp.com",
+      projectId: "iv-therapy-game",
+      storageBucket: "iv-therapy-game.appspot.com",
+      messagingSenderId: "338220477391",
+      appId: "1:338220477391:web:01c0785bf10404e42a40ba",
+      measurementId: "G-9MEFL6Z5FS"
+    };
 
-     <!-- Sketching assignment --> 
-     <div class="flex-container">
-<section class="assign">
-<img src="/Sketch1.jpg" /> 
-<section class="assign-det">
-<a href="/TSketch.pdf"><h2>Team Sketches: [<span style="font-size: 13px; color:#0066cc;">Introducing EduBoost: The Ultimate Teaching Companion</span> ]</h2> <p>
-[<span style="font-size: 13px; color:#009933;">EduBoost is a groundbreaking app designed to empower teachers. Here you will see how easy it is to do what you love anywhere in the world!] </p></a> 
-</section>  </div>
-    </section>
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+    const db = getFirestore(app);
 
-     <!-- Paper prototype assignment -->
-     <div class="flex-container">
- <section class="assign">
- <img src="BTG.png" />
- <section class="assign-det">
- <a href="https://youtu.be/IAobRUZ6ONM"><h2>Team Paper Prototype: [Bridging the Gap!]</h2></a>
- <p>
- [ <span style="font-size: 13px; color:#3005EB;">- 💡 Changing Multiple Brains All Over The WORLD!.</span>]
- </p>
- </section>
-</div>
-    </section>
+    // Expose Firestore + methods so the next script can see them
+    window._quizDB = db;
+    window.addDoc = addDoc;
+    window.collection = collection;
+    window.getDocs = getDocs;
+    window.query = query;
+    window.orderBy = orderBy;
+  </script>
 
-         <!-- HiFi prototype assignment -->
-     <div class="flex-container">
- <section class="assign">
- <img src="Home.png" />
- <section class="assign-det">
- <a href="https://youtu.be/be5NtOfWWlY"><h2>Team HiFi Prototype: [Bridging the Gap!]</h2></a>
- <p>
- [ <span style="font-size: 13px; color:#3005EB;">- 💡 BRIDGING THE GAP IS LIVE!.</span>]
- </p>
- </section>
-</div>
-    </section>
- 
- </div>  
-</p>
-</section>
-</section>
+  <!-- ============= QUIZ + LEADERBOARD LOGIC ============= -->
+  <script>
+    /***********************************************
+     * Global Variables
+     ***********************************************/
+    let score = 0;
+    let timeLeft = 60;
+    let timerId;
+    let currentUser = "Anonymous";
 
-  </body>
+    /***********************************************
+     * Prompt for Username
+     ***********************************************/
+    function promptUsername() {
+      const name = prompt("Enter your name (or cancel for Anonymous):");
+      currentUser = name ? name.trim() : "Anonymous";
+
+      // Hide the opener, show main content
+      document.getElementById("opener").style.display = "none";
+      const mainContent = document.getElementById("main-content");
+      mainContent.style.display = "block";
+
+      // Show user name
+      document.getElementById("playerName").textContent = currentUser;
+
+      // Start the quiz at Q1
+      startTimer("q1","q2");
+    }
+
+    /***********************************************
+     * Timer
+     ***********************************************/
+    function startTimer(currentId, nextId) {
+      const timerElement = document.getElementById("timer");
+      timeLeft = 60;
+      clearInterval(timerId);
+
+      timerId = setInterval(() => {
+        timeLeft--;
+        timerElement.textContent = `Time Left: ${timeLeft}s`;
+        if (timeLeft <= 0) {
+          clearInterval(timerId);
+          moveToNextQuestion(currentId, nextId);
+        }
+      }, 1000);
+    }
+
+    function moveToNextQuestion(currentId, nextId) {
+      document.getElementById(currentId).classList.remove("active");
+      const nextQuestion = document.getElementById(nextId);
+
+      if (nextQuestion) {
+        nextQuestion.classList.add("active");
+        if (nextId !== "finalMessage") {
+          // chain the next question
+          let upcomingNext;
+          if (nextId === "q2") upcomingNext = "q3";
+          else if (nextId === "q3") upcomingNext = "q4";
+          else if (nextId === "q4") upcomingNext = "finalMessage";
+          startTimer(nextId, upcomingNext);
+        } else {
+          // finalMessage
+          document.getElementById("finalScore").textContent = score;
+          clearInterval(timerId);
+        }
+      }
+    }
+
+    /***********************************************
+     * Q1: Multi-check
+     ***********************************************/
+    function checkAnswers(currentId, nextId) {
+      const selected = document.querySelectorAll(`#${currentId} input[name="answer"]:checked`);
+      const correctAnswers = ["correct1", "correct2", "correct3", "correct4"];
+      const selectedValues = Array.from(selected).map(input => input.value);
+      const feedback = document.getElementById(`feedback${currentId.slice(-1)}`);
+
+      const isCorrect = correctAnswers.every(a => selectedValues.includes(a))
+                       && !selectedValues.includes("incorrect")
+                       && selectedValues.length === correctAnswers.length;
+
+      if (isCorrect) {
+        feedback.textContent = "Correct! Great job!";
+        feedback.className = "feedback correct";
+        score += 10;
+      } else {
+        feedback.textContent = "Oops! Some selections incorrect.";
+        feedback.className = "feedback incorrect";
+        score -= 5;
+      }
+      document.getElementById("score").textContent = score;
+
+      setTimeout(() => moveToNextQuestion(currentId, nextId), 1000);
+    }
+
+    /***********************************************
+     * Q2: Single Click
+     ***********************************************/
+    function handleClick(currentId, nextId, isCorrect) {
+      const feedback = document.getElementById(`feedback${currentId.slice(-1)}`);
+      if (isCorrect) {
+        feedback.textContent = "Correct! Great job!";
+        feedback.className = "feedback correct";
+        score += 10;
+      } else {
+        feedback.textContent = "Wrong answer!";
+        feedback.className = "feedback incorrect";
+        score -= 5;
+      }
+      document.getElementById("score").textContent = score;
+
+      setTimeout(() => moveToNextQuestion(currentId, nextId), 1000);
+    }
+
+    /***********************************************
+     * Q3: Image Map
+     ***********************************************/
+    function showFeedback(isCorrect, currentId, nextId) {
+      const feedback = document.getElementById(`feedback${currentId.slice(-1)}`);
+      if (isCorrect) {
+        feedback.textContent = "Correct! Great job!";
+        feedback.className = "feedback correct";
+        score += 10;
+      } else {
+        feedback.textContent = "Wrong area!";
+        feedback.className = "feedback incorrect";
+        score -= 5;
+      }
+      document.getElementById("score").textContent = score;
+
+      setTimeout(() => moveToNextQuestion(currentId, nextId), 1000);
+    }
+
+    /***********************************************
+     * Q4: Drag & Drop
+     ***********************************************/
+    const draggableList = document.getElementById('draggable-list');
+    let dragItem = null;
+
+    if (draggableList) {
+      const listItems = [...draggableList.querySelectorAll('li')];
+      listItems.forEach(li => {
+        li.addEventListener('dragstart', dragStart);
+        li.addEventListener('dragend', dragEnd);
+      });
+      draggableList.addEventListener('dragover', dragOver);
+      draggableList.addEventListener('drop', dropItem);
+    }
+
+    function dragStart(e) {
+      dragItem = this;
+      this.classList.add('dragging');
+      e.dataTransfer.setData('text/plain', '');
+    }
+    function dragEnd() {
+      this.classList.remove('dragging');
+      dragItem = null;
+    }
+    function dragOver(e) {
+      e.preventDefault();
+    }
+    function dropItem(e) {
+      e.preventDefault();
+      if (dragItem) {
+        const listItems = [...draggableList.querySelectorAll('li:not(.dragging)')];
+        const afterElement = listItems.find(li => {
+          const rect = li.getBoundingClientRect();
+          return e.clientY < rect.top + rect.height / 2;
+        });
+        if (!afterElement) {
+          draggableList.appendChild(dragItem);
+        } else {
+          draggableList.insertBefore(dragItem, afterElement);
+        }
+      }
+    }
+
+    function checkOrder(currentId, nextId) {
+      const feedback = document.getElementById('feedback4');
+      const correctOrder = ['24','22','20','18'];
+      const liElements = document.querySelectorAll('#draggable-list li');
+      const userOrder = [...liElements].map(li => li.getAttribute('data-value'));
+
+      if (JSON.stringify(userOrder) === JSON.stringify(correctOrder)) {
+        feedback.textContent = "Correct order! Great job!";
+        feedback.className = "feedback correct";
+        score += 10;
+      } else {
+        feedback.textContent = "Incorrect order. Smaller # = bigger gauge!";
+        feedback.className = "feedback incorrect";
+        score -= 5;
+      }
+      document.getElementById("score").textContent = score;
+      setTimeout(() => moveToNextQuestion(currentId, nextId), 1000);
+    }
+
+    /***********************************************
+     * Submit Score to Firestore
+     ***********************************************/
+    async function submitToLeaderboard() {
+      try {
+        const { addDoc, collection } = window;
+        await addDoc(collection(window._quizDB, "scores"), {
+          username: currentUser,
+          score,
+          date: new Date().toISOString()
+        });
+        alert("Score submitted to leaderboard!");
+      } catch (err) {
+        console.error("Error saving score:", err);
+        alert("Error saving score: " + err.message);
+      }
+    }
+
+    /***********************************************
+     * Admin Login & Load Leaderboard
+     ***********************************************/
+    function adminLogin() {
+      const pass = prompt("Enter Admin Password (demo only):");
+      if (pass === "admin123") {
+        document.getElementById("adminSection").style.display = "block";
+        loadLeaderboard();
+      } else {
+        alert("Incorrect admin password!");
+      }
+    }
+
+    async function loadLeaderboard() {
+      const { getDocs, query, collection, orderBy } = window;
+      const tbody = document.getElementById("leaderboardBody");
+      tbody.innerHTML = "Loading...";
+
+      try {
+        const q = query(collection(window._quizDB, "scores"), orderBy("date", "desc"));
+        const snapshot = await getDocs(q);
+
+        let html = "";
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          html += `<tr>
+            <td>${data.username}</td>
+            <td>${data.score}</td>
+            <td>${data.date}</td>
+          </tr>`;
+        });
+
+        tbody.innerHTML = html || "<tr><td colspan='3'>No scores found</td></tr>";
+      } catch (err) {
+        console.error("Error loading leaderboard:", err);
+        tbody.innerHTML = "<tr><td colspan='3'>Error loading data</td></tr>";
+      }
+    }
+  </script>
+</body>
 </html>
