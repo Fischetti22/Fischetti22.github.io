@@ -63,21 +63,20 @@
 
     main {
       padding: 20px;
-      display: none; /* Initially hide the main content */
+      display: none; /* hide initially */
       max-width: 900px;
       margin: 0 auto;
     }
     .question {
-      display: none; /* Hide all questions initially */
+      display: none;
       margin-bottom: 20px;
       background: white;
       border-radius: 8px;
       padding: 20px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      position: relative; /* for absolutely positioned elements if needed */
     }
     .question.active {
-      display: block; /* Show only the active question */
+      display: block; /* only the active question is shown */
     }
 
     /* Buttons */
@@ -113,6 +112,7 @@
       color: red;
     }
 
+    /* Score & Timer */
     #scoreBoard {
       margin-bottom: 20px;
       font-size: 1.2rem;
@@ -125,7 +125,8 @@
       text-align: center;
       margin-bottom: 20px;
     }
-    /* Final Message as a question block so .active can apply */
+
+    /* Final Message (last question) */
     #finalMessage {
       display: none;
       text-align: center;
@@ -135,30 +136,12 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
     #finalMessage.active {
-      display: block; /* Force finalMessage to appear */
-    }
-
-    /* Q3 custom styling for clickable boxes */
-    .clickable-zone {
-      position: absolute;
-      width: 50px;
-      height: 50px;
-      background-color: rgba(255,0,0,0.3); /* semi-transparent red box */
-      border: 2px solid #FF0000;
-      cursor: pointer;
-    }
-    .clickable-zone.correct:hover {
-      background-color: rgba(0,255,0,0.3);
-      border-color: green;
-    }
-    .clickable-zone.wrong:hover {
-      background-color: rgba(255,0,0,0.5);
-      border-color: darkred;
+      display: block;
     }
 
     /* Admin / Leaderboard styling */
     #adminSection {
-      display: none; /* Hidden by default */
+      display: none; 
       background: #fff;
       padding: 20px;
       margin: 20px 0;
@@ -175,7 +158,7 @@
       text-align: left;
     }
 
-    /* Drag & Drop (Q4) */
+    /* Q4 Drag & Drop */
     #draggable-list {
       list-style-type: none;
       margin: 0 auto;
@@ -197,7 +180,6 @@
     .dragging {
       opacity: 0.5;
     }
-
   </style>
 </head>
 <body>
@@ -213,7 +195,6 @@
 <!-- Game Section -->
 <header>IV Therapy Interactive Game</header>
 <main id="main-content">
-
   <!-- Admin login button / scoreboard toggler -->
   <div style="text-align:right; margin-bottom:10px;">
     <button onclick="adminLogin()">Admin Login</button>
@@ -226,93 +207,52 @@
   </div>
   <div id="timer">Time Left: 60s</div>
 
-
-  <!-- Question 1 -->
+  <!-- Question 1 (checkboxes) -->
   <div class="question active" id="q1">
-    <h2>Question 1: What are common sites to avoid when starting an IV? (Select all that apply)</h2>
-    <img src="iv_placement.jpeg" 
-         alt="IV Placement Guide" 
-         style="max-width:100%; height:auto; margin-bottom:15px;">
-    <form id="q1-form">
-      <div class="options">
-        <label><input type="checkbox" name="answer" value="correct1">Extremities with an AV Fistula, graft, or known clot</label><br/>
-        <label><input type="checkbox" name="answer" value="correct2">Extremity affected by stroke, radiation therapy, or lymphedema</label><br/>
-        <label><input type="checkbox" name="answer" value="correct3">Areas of flexion, lower extremity, or open wounds</label><br/>
-        <label><input type="checkbox" name="answer" value="incorrect">A vein in the non-dominant arm</label><br/>
-        <label><input type="checkbox" name="answer" value="incorrect">Veins on the dorsal and ventral surfaces of the upper extremitites.</label><br/>
-        <label><input type="checkbox" name="answer" value="correct4">Veins in an upper extremity on the side of breast surgery</label>
-      </div>
-      <button type="button" onclick="checkAnswers('q1')">Submit</button>
-      <div id="feedback1" class="feedback"></div>
-      <button id="nextQ1Btn" class="disabled" onclick="manualNext('q1','q2')" disabled>Next</button>
-    </form>
+    <h2 id="q1-title">Loading Question 1...</h2>
+    <img src="iv_placement.jpeg" alt="IV Placement Guide" style="max-width:100%; height:auto; margin-bottom:15px;">
+    <form id="q1-form"></form>
+    <div id="feedback1" class="feedback"></div>
+    <button id="nextQ1Btn" class="disabled" onclick="manualNext('q1','q2')" disabled>Next</button>
   </div>
 
-
-  <!-- Question 2 -->
+  <!-- Question 2 (single-click) -->
   <div class="question" id="q2">
-    <h2>Question 2: What is the appropriate catheter gauge for rapid fluid replacement?</h2>
-    <div class="options">
-      <button onclick="handleClick('q2',true)">16-20</button>
-      <button onclick="handleClick('q2',false)">20-24</button>
-      <button onclick="handleClick('q2',false)">24-28</button>
-    </div>
+    <h2 id="q2-title">Loading Question 2...</h2>
+    <div id="q2-options" class="options"></div>
     <div id="feedback2" class="feedback"></div>
     <button id="nextQ2Btn" class="disabled" onclick="manualNext('q2','q3')" disabled>Next</button>
   </div>
 
-
-  <!-- Question 3 (Click the correct boxes) -->
+  <!-- Question 3 (no changes) -->
   <div class="question" id="q3">
-    <h2>Question 3: Click all the correct sites on the image below</h2>
-
-    <!-- Container for the background image + absolutely positioned boxes -->
-    <div style="position:relative; display:inline-block;">
-      <img src="periphal.jpeg" alt="IV Diagram" width="600" height="400" />
-      <!-- You can add as many .clickable-zone boxes as you like. Example below: -->
-
-      <!-- Box 1 (correct) at top=80px, left=100px, size=50x50. -->
-      <div class="clickable-zone correct"
-           style="top:80px; left:100px;"
-           onclick="toggleClickZone(this)"></div>
-
-      <!-- Box 2 (wrong) at top=200px, left=300px, size=50x50. -->
-      <div class="clickable-zone wrong"
-           style="top:200px; left:300px;"
-           onclick="toggleClickZone(this)"></div>
-
-      <!-- Box 3 (correct) at top=150px, left=400px, size=50x50. -->
-      <div class="clickable-zone correct"
-           style="top:150px; left:400px;"
-           onclick="toggleClickZone(this)"></div>
-    </div>
-
-    <p>Tip: Correct boxes will show as green on hover if .correct, or red if .wrong. 
-       We can further refine the styling as needed. 
-    </p>
-
-    <button onclick="checkQ3()">Submit</button>
+    <h2>Question 3: Choose the correct sites to start a peripheral IV</h2>
+    <img 
+      src="periphal.jpeg"
+      alt="IV Diagram"
+      style="display:block; max-width:100%; height:auto; margin:0 auto;"
+    />
+    <p>(Imagine this replaced the clickable map or boxes as needed.)</p>
+    <button onclick="handleClickQ3(true)">Simulate Correct</button>
+    <button onclick="handleClickQ3(false)">Simulate Wrong</button>
     <div id="feedback3" class="feedback"></div>
     <button id="nextQ3Btn" class="disabled" onclick="manualNext('q3','q4')" disabled>Next</button>
   </div>
-
 
   <!-- Question 4 (Drag & Drop) -->
   <div class="question" id="q4">
     <h2>Question 4: Place the catheter gauge size from smallest to largest</h2>
     <p><em>Hint: bigger gauge number = smaller diameter. So 24 is smallest, 18 is largest.</em></p>
-
     <ul id="draggable-list">
       <li draggable="true" data-value="24">24</li>
       <li draggable="true" data-value="22">22</li>
       <li draggable="true" data-value="20">20</li>
       <li draggable="true" data-value="18">18</li>
     </ul>
-    <button onclick="checkOrder()">Submit</button>
+    <button onclick="checkOrderQ4()">Submit</button>
     <div id="feedback4" class="feedback"></div>
     <button id="nextQ4Btn" class="disabled" onclick="manualNext('q4','finalMessage')" disabled>Next</button>
   </div>
-
 
   <!-- Final Message -->
   <div id="finalMessage" class="question">
@@ -320,7 +260,6 @@
     <p>Your final score is: <strong><span id="finalScore"></span></strong></p>
     <p><button onclick="submitToLeaderboard()">Submit Score to Leaderboard</button></p>
   </div>
-
 
   <!-- Admin Section: Leaderboard -->
   <div id="adminSection">
@@ -336,10 +275,9 @@
       <tbody id="leaderboardBody"></tbody>
     </table>
   </div>
-
 </main>
 
-<!-- ============= FIREBASE CDN (ES MODULE) ============= -->
+<!-- Firebase -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics.js";
@@ -353,7 +291,6 @@
   } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
   const firebaseConfig = {
-    /* Your Firebase Config */
     apiKey: "YOUR_API_KEY",
     authDomain: "iv-therapy-game.firebaseapp.com",
     projectId: "iv-therapy-game",
@@ -367,7 +304,6 @@
   const analytics = getAnalytics(app);
   const db = getFirestore(app);
 
-  // Expose Firestore to the window, so the next script can access it
   window._quizDB = db;
   window.addDoc = addDoc;
   window.collection = collection;
@@ -376,34 +312,57 @@
   window.orderBy = orderBy;
 </script>
 
-<!-- ============= QUIZ + LEADERBOARD LOGIC ============= -->
+<!-- Quiz + Leaderboard Logic -->
 <script>
   let score = 0;
   let timeLeft = 60;
   let timerId;
-  let currentUser = "Anonymous"; 
+  let currentUser = "Anonymous";
 
-  /***********************************************
-   * START & TIMER
-   ***********************************************/
+  // Data structure for Q1 and Q2 so we can randomize
+  const q1Data = {
+    question: "Question 1: What are common sites to avoid when starting an IV? (Select all that apply)",
+    answers: [
+      { value: "correct1", label: "Extremities with an AV Fistula, graft, or known clot" },
+      { value: "correct2", label: "Extremity affected by stroke, radiation therapy, or lymphedema" },
+      { value: "correct3", label: "Areas of flexion, lower extremity, or open wounds" },
+      { value: "incorrect", label: "A vein in the non-dominant arm" },
+      { value: "incorrect", label: "Veins on the dorsal and ventral surfaces of the upper extremitites." },
+      { value: "correct4", label: "Veins in an upper extremity on the side of breast surgery" }
+    ],
+    correctSet: ["correct1", "correct2", "correct3", "correct4"]
+  };
+
+  const q2Data = {
+    question: "Question 2: What is the appropriate catheter gauge for rapid fluid replacement?",
+    answers: [
+      { text: "16-20", correct: true },
+      { text: "20-24", correct: false },
+      { text: "24-28", correct: false }
+    ]
+  };
+
+  /************************************************************
+   * 1) Start and Timer
+   ************************************************************/
   function promptUsername() {
     const name = prompt("Enter your name (or cancel for Anonymous):");
     currentUser = name ? name.trim() : "Anonymous";
-
-    // Hide the opener, show main content
     document.getElementById("opener").style.display = "none";
     document.getElementById("main-content").style.display = "block";
-
-    // Show player's name
     document.getElementById("playerName").textContent = currentUser;
 
-    // Start on Q1
+    // Build Q1 + Q2 random answers
+    buildQ1();
+    buildQ2();
+
+    // Start Q1
     startTimer("q1", "q2");
   }
 
   function startTimer(currentId, nextId) {
     const timerElement = document.getElementById("timer");
-    timeLeft = 60; 
+    timeLeft = 60;
     clearInterval(timerId);
 
     timerId = setInterval(() => {
@@ -411,15 +370,13 @@
       timerElement.textContent = `Time Left: ${timeLeft}s`;
       if (timeLeft <= 0) {
         clearInterval(timerId);
-        // Move on automatically
         moveToNextQuestion(currentId, nextId);
       }
     }, 1000);
   }
 
-  // Called by the "Next" button
+  // "Next" button triggers this
   function manualNext(currentId, nextId) {
-    // We also reset timer
     clearInterval(timerId);
     moveToNextQuestion(currentId, nextId);
   }
@@ -430,32 +387,84 @@
     if (nextQ) {
       nextQ.classList.add("active");
       if (nextId !== "finalMessage") {
-        // Chain
         let upcomingNext;
         if (nextId === "q2") upcomingNext = "q3";
         else if (nextId === "q3") upcomingNext = "q4";
         else if (nextId === "q4") upcomingNext = "finalMessage";
         startTimer(nextId, upcomingNext);
       } else {
-        // finalMessage
         document.getElementById("finalScore").textContent = score;
       }
     }
   }
 
-  /***********************************************
-   * Q1: CheckAnswers
-   ***********************************************/
-  function checkAnswers(currentId) {
-    const selected = document.querySelectorAll(`#${currentId} input[name="answer"]:checked`);
-    const correctAnswers = ["correct1", "correct2", "correct3", "correct4"];
-    const selectedValues = Array.from(selected).map(i => i.value);
-    const feedback = document.getElementById(`feedback${currentId.slice(-1)}`);
+  /************************************************************
+   * 2) Build Q1 and Q2 with Randomized Answers
+   ************************************************************/
+  function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i+1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+  }
 
+  function buildQ1() {
+    document.getElementById("q1-title").textContent = q1Data.question;
+
+    // Shuffle q1Data.answers
+    const answers = [...q1Data.answers];
+    shuffleArray(answers);
+
+    const form = document.getElementById("q1-form");
+    form.innerHTML = ""; // clear
+
+    answers.forEach(ans => {
+      const label = document.createElement("label");
+      label.innerHTML = `<input type="checkbox" name="answer" value="${ans.value}" /> ${ans.label}`;
+      form.appendChild(label);
+      form.appendChild(document.createElement("br"));
+    });
+
+    // Add a "Submit" button
+    const submitBtn = document.createElement("button");
+    submitBtn.textContent = "Submit";
+    submitBtn.type = "button";
+    submitBtn.onclick = () => checkAnswersQ1();
+    form.appendChild(submitBtn);
+  }
+
+  function buildQ2() {
+    document.getElementById("q2-title").textContent = q2Data.question;
+
+    // Shuffle q2Data.answers
+    const arr = [...q2Data.answers];
+    shuffleArray(arr);
+
+    const container = document.getElementById("q2-options");
+    container.innerHTML = "";
+
+    arr.forEach(ans => {
+      const btn = document.createElement("button");
+      btn.textContent = ans.text;
+      btn.onclick = () => handleClickQ2(ans.correct);
+      container.appendChild(btn);
+    });
+  }
+
+  /************************************************************
+   * Q1 (checkboxes)
+   ************************************************************/
+  function checkAnswersQ1() {
+    const selected = document.querySelectorAll(`#q1 input[name="answer"]:checked`);
+    const selectedValues = Array.from(selected).map(i => i.value);
+    const feedback = document.getElementById("feedback1");
+
+    // Check if user selected all correct and no incorrect
+    const correctSet = ["correct1", "correct2", "correct3", "correct4"];
     const isCorrect =
-      correctAnswers.every(a => selectedValues.includes(a)) &&
+      correctSet.every(a => selectedValues.includes(a)) &&
       !selectedValues.includes("incorrect") &&
-      selectedValues.length === correctAnswers.length;
+      selectedValues.length === correctSet.length;
 
     if (isCorrect) {
       feedback.textContent = "Correct! Great job!";
@@ -466,19 +475,20 @@
       feedback.className = "feedback incorrect";
       score -= 5;
     }
+
     document.getElementById("score").textContent = score;
 
-    // Enable Next button
+    // Enable Next
     const nextBtn = document.getElementById("nextQ1Btn");
     nextBtn.disabled = false;
     nextBtn.classList.remove("disabled");
   }
 
-  /***********************************************
-   * Q2: Single-Click
-   ***********************************************/
-  function handleClick(currentId, isCorrect) {
-    const feedback = document.getElementById(`feedback${currentId.slice(-1)}`);
+  /************************************************************
+   * Q2 (single-click)
+   ************************************************************/
+  function handleClickQ2(isCorrect) {
+    const feedback = document.getElementById("feedback2");
     if (isCorrect) {
       feedback.textContent = "Correct! Great job!";
       feedback.className = "feedback correct";
@@ -496,40 +506,20 @@
     nextBtn.classList.remove("disabled");
   }
 
-
-  /***********************************************
-   * Q3: Clickable Zones
-   ***********************************************/
-  // Let the user click multiple correct/wrong boxes
-  // We'll store which ones were clicked
-  function toggleClickZone(elem) {
-    // We can toggle a "selected" class or data attribute
-    elem.classList.toggle("selected");
-  }
-
-  function checkQ3() {
-    // Suppose .clickable-zone.correct => must be selected
-    // .clickable-zone.wrong => must NOT be selected
-    let feedback = document.getElementById("feedback3");
-
-    const correctZones = document.querySelectorAll("#q3 .clickable-zone.correct");
-    const wrongZones = document.querySelectorAll("#q3 .clickable-zone.wrong");
-
-    // Check if every correct zone is selected
-    const allCorrectSelected = Array.from(correctZones).every(z => z.classList.contains("selected"));
-    // Check if any wrong zone is selected
-    const anyWrongSelected = Array.from(wrongZones).some(z => z.classList.contains("selected"));
-
-    if (allCorrectSelected && !anyWrongSelected) {
+  /************************************************************
+   * Q3 (placeholder, no randomization)
+   ************************************************************/
+  function handleClickQ3(isCorrect) {
+    const feedback = document.getElementById("feedback3");
+    if (isCorrect) {
       feedback.textContent = "Correct! Great job!";
       feedback.className = "feedback correct";
       score += 10;
     } else {
-      feedback.textContent = "Some boxes were incorrect or missed.";
+      feedback.textContent = "Wrong area!";
       feedback.className = "feedback incorrect";
       score -= 5;
     }
-
     document.getElementById("score").textContent = score;
 
     // Enable Next
@@ -538,12 +528,12 @@
     nextBtn.classList.remove("disabled");
   }
 
-
-  /***********************************************
-   * Q4: Drag & Drop
-   ***********************************************/
+  /************************************************************
+   * Q4 (Drag & Drop)
+   ************************************************************/
   const draggableList = document.getElementById('draggable-list');
   let dragItem = null;
+
   if (draggableList) {
     const listItems = [...draggableList.querySelectorAll('li')];
     listItems.forEach(li => {
@@ -582,7 +572,7 @@
     }
   }
 
-  function checkOrder() {
+  function checkOrderQ4() {
     const feedback = document.getElementById('feedback4');
     const correctOrder = ['24','22','20','18'];
     const liElements = document.querySelectorAll('#draggable-list li');
@@ -605,10 +595,9 @@
     nextBtn.classList.remove("disabled");
   }
 
-
-  /***********************************************
+  /************************************************************
    * Submit Score & Admin
-   ***********************************************/
+   ************************************************************/
   async function submitToLeaderboard() {
     try {
       const { addDoc, collection } = window;
