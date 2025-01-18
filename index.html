@@ -172,7 +172,7 @@
 <!-- Opener Screen -->
 <div class="opener" id="opener">
   <!-- Update your image path to point to images/ folder in your GitHub repo -->
-  <img src="/prisma-health-2-1.jpg" alt="IV Therapy Kahoot Challenge">
+  <img src="images/prisma-health-2-1.jpg" alt="IV Therapy Kahoot Challenge">
   <h1>IV Therapy Challenge</h1>
   <p>Welcome to the IV Therapy Interactive Game</p>
   <button onclick="promptUsername()">Start Game</button>
@@ -196,7 +196,7 @@
   <!-- Question 1-->
   <div class="question active" id="q1">
     <h2>Question 1: What are common sites to avoid when starting an IV? (Select all that apply)</h2>
-    <img src="iv_placement.jpeg" 
+    <img src="images/iv_placement.jpeg" 
          alt="IV Placement Guide" 
          style="max-width: 100%; height: auto; margin-bottom: 15px;">
         
@@ -248,7 +248,7 @@
     <h2>Choose the correct sites to start a peripheral IV</h2>
 
     <img 
-      src="periphal.jpeg"
+      src="images/periphal.jpeg"
       alt="IV Diagram"
       usemap="#iv-map"
       width="1800"
@@ -290,7 +290,11 @@
   </div>
 
   <!-- Final Message -->
-  <div id="finalMessage">
+  #finalMessage.active {
+  display: block;  /* Force finalMessage to appear */
+}
+
+  <div id="finalMessage" class="question">
     <h2>Congratulations!</h2>
     <p>Your final score is: <strong><span id="finalScore"></span></strong></p>
     <p><button onclick="submitToLeaderboard()">Submit Score to Leaderboard</button></p>
