@@ -264,6 +264,8 @@
   <!-- Admin Section: Leaderboard -->
   <div id="adminSection">
     <h2>Leaderboard</h2>
+    <!-- NEW: Clear Leaderboard Button -->
+    <button onclick="clearLeaderboard()">Clear Leaderboard</button>
     <table>
       <thead>
         <tr>
@@ -279,37 +281,42 @@
 
 <!-- Firebase -->
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics.js";
+  import { initializeApp } from "firebase/app";
+  import { getAnalytics } from "firebase/analytics";
+
   import {
     getFirestore,
     collection,
     addDoc,
     getDocs,
     query,
-    orderBy
+    orderBy,
+    deleteDoc
   } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "iv-therapy-game.firebaseapp.com",
-    projectId: "iv-therapy-game",
-    storageBucket: "iv-therapy-game.appspot.com",
-    messagingSenderId: "338220477391",
-    appId: "1:338220477391:web:01c0785bf10404e42a40ba",
-    measurementId: "G-9MEFL6Z5FS"
-  };
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAIdR3g5S_nN-i06S--cjo0G1gIW8z7nig",
+  authDomain: "iv-therapy-game.firebaseapp.com",
+  projectId: "iv-therapy-game",
+  storageBucket: "iv-therapy-game.firebasestorage.app",
+  messagingSenderId: "338220477391",
+  appId: "1:338220477391:web:01c0785bf10404e42a40ba",
+  measurementId: "G-9MEFL6Z5FS"
+};
 
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
   const db = getFirestore(app);
 
+  // Expose Firestore + other methods so the next script can see them
   window._quizDB = db;
   window.addDoc = addDoc;
   window.collection = collection;
   window.getDocs = getDocs;
   window.query = query;
   window.orderBy = orderBy;
+  window.deleteDoc = deleteDoc;
 </script>
 
 <!-- Quiz + Leaderboard Logic -->
@@ -610,6 +617,26 @@
     } catch (err) {
       console.error("Error saving score:", err);
       alert("Error saving score: " + err.message);
+    }
+  }
+
+  async function clearLeaderboard() {
+    try {
+      // We'll delete all docs in "scores"
+      const { getDocs, collection, deleteDoc } = window;
+      const collRef = collection(window._quizDB, "scores");
+      const snapshot = await getDocs(collRef);
+
+      // Delete each doc
+      for (const docSnap of snapshot.docs) {
+        await deleteDoc(docSnap.ref);
+      }
+
+      alert("Leaderboard cleared!");
+      loadLeaderboard(); // Reload to show it's empty
+    } catch (err) {
+      console.error("Error clearing leaderboard:", err);
+      alert("Could not clear leaderboard: " + err.message);
     }
   }
 
