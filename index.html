@@ -224,7 +224,7 @@
     <button id="nextQ2Btn" class="disabled" onclick="manualNext('q2','q3')" disabled>Next</button>
   </div>
 
-  <!-- Question 3 (no changes) -->
+  <!-- Question 3 -->
   <div class="question" id="q3">
     <h2>Question 3: Choose the correct sites to start a peripheral IV</h2>
     <img 
@@ -264,7 +264,6 @@
   <!-- Admin Section: Leaderboard -->
   <div id="adminSection">
     <h2>Leaderboard</h2>
-    <!-- NEW: Clear Leaderboard Button -->
     <button onclick="clearLeaderboard()">Clear Leaderboard</button>
     <table>
       <thead>
@@ -279,11 +278,10 @@
   </div>
 </main>
 
-<!-- Firebase -->
+<!-- SINGLE ES MODULE SCRIPT -->
 <script type="module">
-  import { initializeApp } from "firebase/app";
-  import { getAnalytics } from "firebase/analytics";
-
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics.js";
   import {
     getFirestore,
     collection,
@@ -294,39 +292,31 @@
     deleteDoc
   } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyAIdR3g5S_nN-i06S--cjo0G1gIW8z7nig",
-  authDomain: "iv-therapy-game.firebaseapp.com",
-  projectId: "iv-therapy-game",
-  storageBucket: "iv-therapy-game.firebasestorage.app",
-  messagingSenderId: "338220477391",
-  appId: "1:338220477391:web:01c0785bf10404e42a40ba",
-  measurementId: "G-9MEFL6Z5FS"
-};
+  /*********************************************
+   * 1) FIREBASE CONFIG + INIT
+   *********************************************/
+  const firebaseConfig = {
+    apiKey: "AIzaSyAIdR3g5S_nN-i06S--cjo0G1gIW8z7nig",
+    authDomain: "iv-therapy-game.firebaseapp.com",
+    projectId: "iv-therapy-game",
+    storageBucket: "iv-therapy-game.firebasestorage.app",
+    messagingSenderId: "338220477391",
+    appId: "1:338220477391:web:01c0785bf10404e42a40ba",
+    measurementId: "G-9MEFL6Z5FS"
+  };
 
   const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+  getAnalytics(app);
   const db = getFirestore(app);
 
-  // Expose Firestore + other methods so the next script can see them
-  window._quizDB = db;
-  window.addDoc = addDoc;
-  window.collection = collection;
-  window.getDocs = getDocs;
-  window.query = query;
-  window.orderBy = orderBy;
-  window.deleteDoc = deleteDoc;
-</script>
-
-<!-- Quiz + Leaderboard Logic -->
-<script>
+  /*********************************************
+   * 2) GLOBALS
+   *********************************************/
   let score = 0;
   let timeLeft = 60;
   let timerId;
   let currentUser = "Anonymous";
 
-  // Data structure for Q1 and Q2 so we can randomize
   const q1Data = {
     question: "Question 1: What are common sites to avoid when starting an IV? (Select all that apply)",
     answers: [
@@ -349,32 +339,28 @@ const firebaseConfig = {
     ]
   };
 
-  /************************************************************
-   * 1) Start and Timer
-   ************************************************************/
-  function promptUsername() {
+  /*********************************************
+   * 3) START + TIMER
+   *********************************************/
+  window.promptUsername = function promptUsername() {
     const name = prompt("Enter your name (or cancel for Anonymous):");
     currentUser = name ? name.trim() : "Anonymous";
     document.getElementById("opener").style.display = "none";
     document.getElementById("main-content").style.display = "block";
     document.getElementById("playerName").textContent = currentUser;
 
-    // Build Q1 + Q2 random answers
     buildQ1();
     buildQ2();
-
-    // Start Q1
     startTimer("q1", "q2");
-  }
+  };
 
   function startTimer(currentId, nextId) {
-    const timerElement = document.getElementById("timer");
     timeLeft = 60;
     clearInterval(timerId);
 
     timerId = setInterval(() => {
       timeLeft--;
-      timerElement.textContent = `Time Left: ${timeLeft}s`;
+      document.getElementById("timer").textContent = `Time Left: ${timeLeft}s`;
       if (timeLeft <= 0) {
         clearInterval(timerId);
         moveToNextQuestion(currentId, nextId);
@@ -382,11 +368,10 @@ const firebaseConfig = {
     }, 1000);
   }
 
-  // "Next" button triggers this
-  function manualNext(currentId, nextId) {
+  window.manualNext = function manualNext(currentId, nextId) {
     clearInterval(timerId);
     moveToNextQuestion(currentId, nextId);
-  }
+  };
 
   function moveToNextQuestion(currentId, nextId) {
     document.getElementById(currentId).classList.remove("active");
@@ -405,25 +390,23 @@ const firebaseConfig = {
     }
   }
 
-  /************************************************************
-   * 2) Build Q1 and Q2 with Randomized Answers
-   ************************************************************/
+  /*********************************************
+   * 4) BUILD Q1 & Q2
+   *********************************************/
   function shuffleArray(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i+1));
+      const j = Math.floor(Math.random() * (i + 1));
       [arr[i], arr[j]] = [arr[j], arr[i]];
     }
   }
 
   function buildQ1() {
     document.getElementById("q1-title").textContent = q1Data.question;
-
-    // Shuffle q1Data.answers
     const answers = [...q1Data.answers];
     shuffleArray(answers);
 
     const form = document.getElementById("q1-form");
-    form.innerHTML = ""; // clear
+    form.innerHTML = "";
 
     answers.forEach(ans => {
       const label = document.createElement("label");
@@ -432,18 +415,15 @@ const firebaseConfig = {
       form.appendChild(document.createElement("br"));
     });
 
-    // Add a "Submit" button
     const submitBtn = document.createElement("button");
     submitBtn.textContent = "Submit";
     submitBtn.type = "button";
-    submitBtn.onclick = () => checkAnswersQ1();
+    submitBtn.onclick = checkAnswersQ1;
     form.appendChild(submitBtn);
   }
 
   function buildQ2() {
     document.getElementById("q2-title").textContent = q2Data.question;
-
-    // Shuffle q2Data.answers
     const arr = [...q2Data.answers];
     shuffleArray(arr);
 
@@ -458,15 +438,14 @@ const firebaseConfig = {
     });
   }
 
-  /************************************************************
-   * Q1 (checkboxes)
-   ************************************************************/
-  function checkAnswersQ1() {
+  /*********************************************
+   * 5) Q1 Logic
+   *********************************************/
+  window.checkAnswersQ1 = function checkAnswersQ1() {
     const selected = document.querySelectorAll(`#q1 input[name="answer"]:checked`);
-    const selectedValues = Array.from(selected).map(i => i.value);
+    const selectedValues = [...selected].map(i => i.value);
     const feedback = document.getElementById("feedback1");
 
-    // Check if user selected all correct and no incorrect
     const correctSet = ["correct1", "correct2", "correct3", "correct4"];
     const isCorrect =
       correctSet.every(a => selectedValues.includes(a)) &&
@@ -482,19 +461,17 @@ const firebaseConfig = {
       feedback.className = "feedback incorrect";
       score -= 5;
     }
-
     document.getElementById("score").textContent = score;
 
-    // Enable Next
     const nextBtn = document.getElementById("nextQ1Btn");
     nextBtn.disabled = false;
     nextBtn.classList.remove("disabled");
-  }
+  };
 
-  /************************************************************
-   * Q2 (single-click)
-   ************************************************************/
-  function handleClickQ2(isCorrect) {
+  /*********************************************
+   * 6) Q2 Logic
+   *********************************************/
+  window.handleClickQ2 = function handleClickQ2(isCorrect) {
     const feedback = document.getElementById("feedback2");
     if (isCorrect) {
       feedback.textContent = "Correct! Great job!";
@@ -507,16 +484,15 @@ const firebaseConfig = {
     }
     document.getElementById("score").textContent = score;
 
-    // Enable Next
     const nextBtn = document.getElementById("nextQ2Btn");
     nextBtn.disabled = false;
     nextBtn.classList.remove("disabled");
-  }
+  };
 
-  /************************************************************
-   * Q3 (placeholder, no randomization)
-   ************************************************************/
-  function handleClickQ3(isCorrect) {
+  /*********************************************
+   * 7) Q3 Logic
+   *********************************************/
+  window.handleClickQ3 = function handleClickQ3(isCorrect) {
     const feedback = document.getElementById("feedback3");
     if (isCorrect) {
       feedback.textContent = "Correct! Great job!";
@@ -529,15 +505,14 @@ const firebaseConfig = {
     }
     document.getElementById("score").textContent = score;
 
-    // Enable Next
     const nextBtn = document.getElementById("nextQ3Btn");
     nextBtn.disabled = false;
     nextBtn.classList.remove("disabled");
-  }
+  };
 
-  /************************************************************
-   * Q4 (Drag & Drop)
-   ************************************************************/
+  /*********************************************
+   * 8) Q4 (Drag & Drop)
+   *********************************************/
   const draggableList = document.getElementById('draggable-list');
   let dragItem = null;
 
@@ -579,7 +554,7 @@ const firebaseConfig = {
     }
   }
 
-  function checkOrderQ4() {
+  window.checkOrderQ4 = function checkOrderQ4() {
     const feedback = document.getElementById('feedback4');
     const correctOrder = ['24','22','20','18'];
     const liElements = document.querySelectorAll('#draggable-list li');
@@ -596,19 +571,17 @@ const firebaseConfig = {
     }
     document.getElementById("score").textContent = score;
 
-    // Enable Next
     const nextBtn = document.getElementById("nextQ4Btn");
     nextBtn.disabled = false;
     nextBtn.classList.remove("disabled");
-  }
+  };
 
-  /************************************************************
-   * Submit Score & Admin
-   ************************************************************/
-  async function submitToLeaderboard() {
+  /*********************************************
+   * 9) Submit Score + Admin
+   *********************************************/
+  window.submitToLeaderboard = async function submitToLeaderboard() {
     try {
-      const { addDoc, collection } = window;
-      await addDoc(collection(window._quizDB, "scores"), {
+      await addDoc(collection(db, "scores"), {
         username: currentUser,
         score,
         date: new Date().toISOString()
@@ -618,29 +591,23 @@ const firebaseConfig = {
       console.error("Error saving score:", err);
       alert("Error saving score: " + err.message);
     }
-  }
+  };
 
-  async function clearLeaderboard() {
+  window.clearLeaderboard = async function clearLeaderboard() {
     try {
-      // We'll delete all docs in "scores"
-      const { getDocs, collection, deleteDoc } = window;
-      const collRef = collection(window._quizDB, "scores");
-      const snapshot = await getDocs(collRef);
-
-      // Delete each doc
-      for (const docSnap of snapshot.docs) {
+      const snap = await getDocs(collection(db, "scores"));
+      for (const docSnap of snap.docs) {
         await deleteDoc(docSnap.ref);
       }
-
       alert("Leaderboard cleared!");
-      loadLeaderboard(); // Reload to show it's empty
+      loadLeaderboard();
     } catch (err) {
       console.error("Error clearing leaderboard:", err);
       alert("Could not clear leaderboard: " + err.message);
     }
-  }
+  };
 
-  function adminLogin() {
+  window.adminLogin = function adminLogin() {
     const pass = prompt("Enter Admin Password (demo only):");
     if (pass === "admin123") {
       document.getElementById("adminSection").style.display = "block";
@@ -648,16 +615,15 @@ const firebaseConfig = {
     } else {
       alert("Incorrect admin password!");
     }
-  }
+  };
 
   async function loadLeaderboard() {
-    const { getDocs, query, collection, orderBy } = window;
     const tbody = document.getElementById("leaderboardBody");
     tbody.innerHTML = "Loading...";
 
     try {
-      const q = query(collection(window._quizDB, "scores"), orderBy("date", "desc"));
-      const snapshot = await getDocs(q);
+      const qRef = query(collection(db, "scores"), orderBy("date", "desc"));
+      const snapshot = await getDocs(qRef);
 
       let html = "";
       snapshot.forEach(doc => {
@@ -675,5 +641,6 @@ const firebaseConfig = {
     }
   }
 </script>
+
 </body>
 </html>
