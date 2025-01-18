@@ -35,7 +35,7 @@
       height: auto;
       margin-bottom: 20px;
       border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
     .opener h1 {
       font-size: 2rem;
@@ -63,7 +63,7 @@
 
     main {
       padding: 20px;
-      display: none; /* hide initially */
+      display: none; /* Initially hidden */
       max-width: 900px;
       margin: 0 auto;
     }
@@ -73,10 +73,10 @@
       background: white;
       border-radius: 8px;
       padding: 20px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
     .question.active {
-      display: block; /* only the active question is shown */
+      display: block; 
     }
 
     /* Buttons */
@@ -126,14 +126,14 @@
       margin-bottom: 20px;
     }
 
-    /* Final Message (last question) */
+    /* Final Message */
     #finalMessage {
       display: none;
       text-align: center;
       background: white;
       padding: 20px;
       border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
     #finalMessage.active {
       display: block;
@@ -180,13 +180,28 @@
     .dragging {
       opacity: 0.5;
     }
+
+    /* For blank screens */
+    .blank-screen {
+      display: none;
+      text-align: center;
+      font-size: 1.4rem;
+      color: #333;
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .blank-screen.active {
+      display: block;
+    }
   </style>
 </head>
 <body>
 
 <!-- Opener Screen -->
 <div class="opener" id="opener">
-  <img src="prisma-health-2-1.jpg" alt="IV Therapy Kahoot Challenge">
+  <img src="prisma-health-2-1.jpg" alt="IV Therapy Test Challenge">
   <h1>IV Therapy Challenge</h1>
   <p>Welcome to the IV Therapy Interactive Game</p>
   <button onclick="promptUsername()">Start Game</button>
@@ -195,7 +210,6 @@
 <!-- Game Section -->
 <header>IV Therapy Interactive Game</header>
 <main id="main-content">
-  <!-- Admin login button / scoreboard toggler -->
   <div style="text-align:right; margin-bottom:10px;">
     <button onclick="adminLogin()">Admin Login</button>
   </div>
@@ -207,7 +221,7 @@
   </div>
   <div id="timer">Time Left: 60s</div>
 
-  <!-- Question 1 (checkboxes) -->
+  <!-- Q1 (Multi-select) -->
   <div class="question active" id="q1">
     <h2 id="q1-title">Loading Question 1...</h2>
     <img src="iv_placement.jpeg" alt="IV Placement Guide" style="max-width:100%; height:auto; margin-bottom:15px;">
@@ -216,7 +230,7 @@
     <button id="nextQ1Btn" class="disabled" onclick="manualNext('q1','q2')" disabled>Next</button>
   </div>
 
-  <!-- Question 2 (single-click) -->
+  <!-- Q2 (Single-click) -->
   <div class="question" id="q2">
     <h2 id="q2-title">Loading Question 2...</h2>
     <div id="q2-options" class="options"></div>
@@ -224,7 +238,7 @@
     <button id="nextQ2Btn" class="disabled" onclick="manualNext('q2','q3')" disabled>Next</button>
   </div>
 
-  <!-- Question 3 -->
+  <!-- Q3 -->
   <div class="question" id="q3">
     <h2>Question 3: Choose the correct sites to start a peripheral IV</h2>
     <img 
@@ -232,14 +246,24 @@
       alt="IV Diagram"
       style="display:block; max-width:100%; height:auto; margin:0 auto;"
     />
-    <p>(Imagine this replaced the clickable map or boxes as needed.)</p>
+    <p>(Imagine clickable map or areas here.)</p>
     <button onclick="handleClickQ3(true)">Simulate Correct</button>
     <button onclick="handleClickQ3(false)">Simulate Wrong</button>
     <div id="feedback3" class="feedback"></div>
-    <button id="nextQ3Btn" class="disabled" onclick="manualNext('q3','q4')" disabled>Next</button>
+    <button id="nextQ3Btn" class="disabled" onclick="manualNext('q3','blank1')" disabled>Next</button>
   </div>
 
-  <!-- Question 4 (Drag & Drop) -->
+  <!-- BLANK #1 (3m30s) -->
+  <div class="blank-screen" id="blank1">
+    <h2>Watch YouTube Link</h2>
+    <p>Please watch this video for <strong>3 minutes 30 seconds</strong>.</p>
+    <p><a href="https://www.youtube.com/watch?v=gCabB1lo2yg&t=21s" target="_blank">
+      https://www.youtube.com/watch?v=gCabB1lo2yg&t=21s
+    </a></p>
+    <button id="nextBlank1Btn" class="disabled" onclick="manualNext('blank1','q4')" disabled>Next</button>
+  </div>
+
+  <!-- Q4 (Drag & Drop) -->
   <div class="question" id="q4">
     <h2>Question 4: Place the catheter gauge size from smallest to largest</h2>
     <p><em>Hint: bigger gauge number = smaller diameter. So 24 is smallest, 18 is largest.</em></p>
@@ -251,7 +275,55 @@
     </ul>
     <button onclick="checkOrderQ4()">Submit</button>
     <div id="feedback4" class="feedback"></div>
-    <button id="nextQ4Btn" class="disabled" onclick="manualNext('q4','finalMessage')" disabled>Next</button>
+    <button id="nextQ4Btn" class="disabled" onclick="manualNext('q4','q5')" disabled>Next</button>
+  </div>
+
+  <!-- Q5: "In which position...external Jugular IV?" -->
+  <div class="question" id="q5">
+    <h2 id="q5-title">Question 5: In which position will you place the patient when removing an external Jugular IV?</h2>
+    <div id="q5-options" class="options"></div>
+    <div id="feedback5" class="feedback"></div>
+    <button id="nextQ5Btn" class="disabled" onclick="manualNext('q5','q6')" disabled>Next</button>
+  </div>
+
+  <!-- Q6 (T/F about IO) -->
+  <div class="question" id="q6">
+    <h2 id="q6-title">Question 6: Any medication, contrast, fluid, or blood can be given through an IO Catheter?</h2>
+    <div id="q6-options" class="options"></div>
+    <div id="feedback6" class="feedback"></div>
+    <button id="nextQ6Btn" class="disabled" onclick="manualNext('q6','blank2')" disabled>Next</button>
+  </div>
+
+  <!-- BLANK #2 (3m30s) -->
+  <div class="blank-screen" id="blank2">
+    <h2>Watch YouTube Link</h2>
+    <p>Please watch this video for <strong>3 minutes 30 seconds</strong>.</p>
+    <p><a href="https://youtu.be/yyyyyyyy" target="_blank">https://youtu.be/yyyyyyyy</a></p>
+    <button id="nextBlank2Btn" class="disabled" onclick="manualNext('blank2','q7')" disabled>Next</button>
+  </div>
+
+  <!-- Q7 (Multi-select) -->
+  <div class="question" id="q7">
+    <h2 id="q7-title">Question 7: A power port is required for contrast injection. What are the appropriate identification methods? (Select all that apply)</h2>
+    <form id="q7-form"></form>
+    <div id="feedback7" class="feedback"></div>
+    <button id="nextQ7Btn" class="disabled" onclick="manualNext('q7','q8')" disabled>Next</button>
+  </div>
+
+  <!-- Q8 (T/F about midline) -->
+  <div class="question" id="q8">
+    <h2 id="q8-title">Question 8: A midline is considered a CVAD</h2>
+    <div id="q8-options" class="options"></div>
+    <div id="feedback8" class="feedback"></div>
+    <button id="nextQ8Btn" class="disabled" onclick="manualNext('q8','q9')" disabled>Next</button>
+  </div>
+
+  <!-- Q9 (Multiple choice: "Before accessing any...") -->
+  <div class="question" id="q9">
+    <h2 id="q9-title">Question 9: Before accessing any peripheral or central line you should first?</h2>
+    <div id="q9-options" class="options"></div>
+    <div id="feedback9" class="feedback"></div>
+    <button id="nextQ9Btn" class="disabled" onclick="manualNext('q9','finalMessage')" disabled>Next</button>
   </div>
 
   <!-- Final Message -->
@@ -278,7 +350,6 @@
   </div>
 </main>
 
-<!-- SINGLE ES MODULE SCRIPT -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-analytics.js";
@@ -292,11 +363,9 @@
     deleteDoc
   } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore.js";
 
-  /*********************************************
-   * 1) FIREBASE CONFIG + INIT
-   *********************************************/
+  /* 1) FIREBASE CONFIG + INIT (same as original) */
   const firebaseConfig = {
-    apiKey: "AIzaSyAIdR3g5S_nN-i06S--cjo0G1gIW8z7nig",
+    apiKey: "YOUR_API_KEY_HERE",
     authDomain: "iv-therapy-game.firebaseapp.com",
     projectId: "iv-therapy-game",
     storageBucket: "iv-therapy-game.firebasestorage.app",
@@ -304,20 +373,22 @@
     appId: "1:338220477391:web:01c0785bf10404e42a40ba",
     measurementId: "G-9MEFL6Z5FS"
   };
-
   const app = initializeApp(firebaseConfig);
   getAnalytics(app);
   const db = getFirestore(app);
 
-  /*********************************************
-   * 2) GLOBALS
-   *********************************************/
+  /* 2) GLOBALS & QUESTION DATA (Q1->Q9, blank screens) */
   let score = 0;
   let timeLeft = 60;
   let timerId;
   let currentUser = "Anonymous";
 
-  const q1Data = {
+  /* Q1–Q3 remain same as your original approach, Q4 is gauge, Q5..Q9 are new. 
+     We'll define the data for Q5..Q9 + their build/logic. 
+     We'll also define 210 second timers for blank1 & blank2. */
+
+  // Q1 data
+  const q1Data = { 
     question: "Question 1: What are common sites to avoid when starting an IV? (Select all that apply)",
     answers: [
       { value: "correct1", label: "Extremities with an AV Fistula, graft, or known clot" },
@@ -327,9 +398,10 @@
       { value: "incorrect", label: "Veins on the dorsal and ventral surfaces of the upper extremitites." },
       { value: "correct4", label: "Veins in an upper extremity on the side of breast surgery" }
     ],
-    correctSet: ["correct1", "correct2", "correct3", "correct4"]
+    correctSet: ["correct1","correct2","correct3","correct4"]
   };
 
+  // Q2 data
   const q2Data = {
     question: "Question 2: What is the appropriate catheter gauge for rapid fluid replacement?",
     answers: [
@@ -339,308 +411,594 @@
     ]
   };
 
+  // Q5 data
+  const q5Data = {
+    question: "In which position will you place the patient when removing an external Jugular IV?",
+    answers: [
+      { text: "High Fowlers", correct: false },
+      { text: "Supine",      correct: true },
+      { text: "Semi Fowlers", correct: false },
+      { text: "Trendelenburg", correct: false },
+    ]
+  };
+
+  // Q6 data (T/F about IO)
+  const q6Data = {
+    question: "Any medication, contrast, fluid, or blood can be given through an IO Catheter?",
+    answers: [
+      { text: "True",  correct: true },
+      { text: "False", correct: false }
+    ]
+  };
+
+  // Q7 (multi-select about power port ID)
+  const q7Data = {
+    question: "A power port is required for contrast injection. What are the appropriate identification methods? (Select all that apply)",
+    answers: [
+      { value: "A", label: "Guess based on the patient's medical history", correct: false },
+      { value: "B", label: "Letter 'CT' visible on power port in CXR", correct: true },
+      { value: "C", label: "Verify post-procedure report or port ID card/bracelet", correct: true },
+      { value: "D", label: "Palpation of the 3 identifying bumps", correct: true },
+      { value: "E", label: "Ask the nurse for their opinion", correct: false },
+      { value: "F", label: "Rely on previous imaging w/o confirming current status", correct: false }
+    ]
+  };
+
+  // Q8 (T/F about midline)
+  const q8Data = {
+    question: "A midline is considered a CVAD",
+    answers: [
+      { text: "True",  correct: false },
+      { text: "False", correct: true }
+    ]
+  };
+
+  // Q9 (multiple choice about scrubbing the hub)
+  const q9Data = {
+    question: "Before accessing any peripheral or central line you should first?",
+    answers: [
+      { text: "Scrub the hub with an alcohol pad for 5 seconds and allow to dry", correct: true },
+      { text: "Wipe the hub with a dry gauze pad for 3 seconds",   correct: false },
+      { text: "Ask the patient if the hub looks clean enough to use", correct: false },
+      { text: "Rinse the hub with water if it looks dirty",         correct: false }
+    ]
+  };
+
   /*********************************************
-   * 3) START + TIMER
+   * 3) Start + Timer
    *********************************************/
   window.promptUsername = function promptUsername() {
     const name = prompt("Enter your name (or cancel for Anonymous):");
     currentUser = name ? name.trim() : "Anonymous";
+    // Hide opener, show main
     document.getElementById("opener").style.display = "none";
     document.getElementById("main-content").style.display = "block";
     document.getElementById("playerName").textContent = currentUser;
 
     buildQ1();
     buildQ2();
-    startTimer("q1", "q2");
+    // Build new Q5..Q9
+    buildQ5();
+    buildQ6();
+    buildQ7();
+    buildQ8();
+    buildQ9();
+    startTimer("q1","q2",60);
   };
 
-  function startTimer(currentId, nextId) {
-    timeLeft = 60;
+  let timerId=null;
+  function startTimer(currentId, nextId, duration=60) {
+    timeLeft = duration;
     clearInterval(timerId);
 
-    timerId = setInterval(() => {
+    timerId = setInterval(()=>{
       timeLeft--;
       document.getElementById("timer").textContent = `Time Left: ${timeLeft}s`;
-      if (timeLeft <= 0) {
+      if(timeLeft<=0){
         clearInterval(timerId);
         moveToNextQuestion(currentId, nextId);
       }
-    }, 1000);
+    },1000);
   }
 
-  window.manualNext = function manualNext(currentId, nextId) {
+  window.manualNext=function manualNext(currentId,nextId){
     clearInterval(timerId);
-    moveToNextQuestion(currentId, nextId);
+    moveToNextQuestion(currentId,nextId);
   };
 
-  function moveToNextQuestion(currentId, nextId) {
+  function moveToNextQuestion(currentId,nextId){
     document.getElementById(currentId).classList.remove("active");
     const nextQ = document.getElementById(nextId);
-    if (nextQ) {
+    if(nextQ){
       nextQ.classList.add("active");
-      if (nextId !== "finalMessage") {
-        let upcomingNext;
-        if (nextId === "q2") upcomingNext = "q3";
-        else if (nextId === "q3") upcomingNext = "q4";
-        else if (nextId === "q4") upcomingNext = "finalMessage";
-        startTimer(nextId, upcomingNext);
+
+      // If next is blank1 or blank2, we do a 210-second timer:
+      if(nextId==="blank1"||nextId==="blank2"){
+        let upcomingNext=(nextId==="blank1")?"q4":"q7";
+        startTimer(nextId, upcomingNext, 210);
       } else {
-        document.getElementById("finalScore").textContent = score;
+        // Decide next for Q3->blank1, Q4->q5, Q5->q6, Q6->blank2, Q7->q8, Q8->q9, Q9->finalMessage
+        switch(nextId){
+          case "q4":   startTimer("q4","q5",60); break;
+          case "q5":   startTimer("q5","q6",60); break;
+          case "q6":   startTimer("q6","blank2",60); break;
+          case "q7":   startTimer("q7","q8",60); break;
+          case "q8":   startTimer("q8","q9",60); break;
+          case "q9":   startTimer("q9","finalMessage",60); break;
+          case "finalMessage":
+            document.getElementById("finalScore").textContent=score;
+            break;
+          default:
+            // Q1->Q2, Q2->Q3
+            if(nextId==="q2"){startTimer("q2","q3",60);}
+            else if(nextId==="q3"){startTimer("q3","blank1",60);}
+        }
       }
     }
   }
 
   /*********************************************
-   * 4) BUILD Q1 & Q2
+   * 4) BUILD Q1 + Q2
    *********************************************/
-  function shuffleArray(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
+  function shuffleArray(arr){
+    for(let i=arr.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [arr[i],arr[j]]=[arr[j],arr[i]];
     }
   }
 
-  function buildQ1() {
-    document.getElementById("q1-title").textContent = q1Data.question;
-    const answers = [...q1Data.answers];
+  function buildQ1(){
+    document.getElementById("q1-title").textContent=q1Data.question;
+    const answers=[...q1Data.answers];
     shuffleArray(answers);
 
-    const form = document.getElementById("q1-form");
-    form.innerHTML = "";
+    const form=document.getElementById("q1-form");
+    form.innerHTML="";
 
-    answers.forEach(ans => {
-      const label = document.createElement("label");
-      label.innerHTML = `<input type="checkbox" name="answer" value="${ans.value}" /> ${ans.label}`;
+    answers.forEach(ans=>{
+      const label=document.createElement("label");
+      label.innerHTML=`<input type="checkbox" name="answer" value="${ans.value}"/> ${ans.label}`;
       form.appendChild(label);
       form.appendChild(document.createElement("br"));
     });
 
-    const submitBtn = document.createElement("button");
-    submitBtn.textContent = "Submit";
-    submitBtn.type = "button";
-    submitBtn.onclick = checkAnswersQ1;
+    const submitBtn=document.createElement("button");
+    submitBtn.textContent="Submit";
+    submitBtn.type="button";
+    submitBtn.onclick=checkAnswersQ1;
     form.appendChild(submitBtn);
   }
 
-  function buildQ2() {
-    document.getElementById("q2-title").textContent = q2Data.question;
-    const arr = [...q2Data.answers];
+  function buildQ2(){
+    document.getElementById("q2-title").textContent=q2Data.question;
+    const arr=[...q2Data.answers];
     shuffleArray(arr);
 
-    const container = document.getElementById("q2-options");
-    container.innerHTML = "";
+    const container=document.getElementById("q2-options");
+    container.innerHTML="";
 
-    arr.forEach(ans => {
-      const btn = document.createElement("button");
-      btn.textContent = ans.text;
-      btn.onclick = () => handleClickQ2(ans.correct);
+    arr.forEach(ans=>{
+      const btn=document.createElement("button");
+      btn.textContent=ans.text;
+      btn.onclick=()=>handleClickQ2(ans.correct);
       container.appendChild(btn);
     });
   }
 
   /*********************************************
-   * 5) Q1 Logic
+   * Q1 Logic
    *********************************************/
-  window.checkAnswersQ1 = function checkAnswersQ1() {
-    const selected = document.querySelectorAll(`#q1 input[name="answer"]:checked`);
-    const selectedValues = [...selected].map(i => i.value);
-    const feedback = document.getElementById("feedback1");
+  window.checkAnswersQ1=function checkAnswersQ1(){
+    const selected=document.querySelectorAll(`#q1 input[name="answer"]:checked`);
+    const selectedValues=[...selected].map(i=>i.value);
+    const feedback=document.getElementById("feedback1");
 
-    const correctSet = ["correct1", "correct2", "correct3", "correct4"];
-    const isCorrect =
-      correctSet.every(a => selectedValues.includes(a)) &&
+    const correctSet=["correct1","correct2","correct3","correct4"];
+    const isCorrect=
+      correctSet.every(a=>selectedValues.includes(a)) &&
       !selectedValues.includes("incorrect") &&
-      selectedValues.length === correctSet.length;
+      selectedValues.length===correctSet.length;
 
-    if (isCorrect) {
-      feedback.textContent = "Correct! Great job!";
-      feedback.className = "feedback correct";
-      score += 10;
+    if(isCorrect){
+      feedback.textContent="Correct! Great job!";
+      feedback.className="feedback correct";
+      score+=10;
     } else {
-      feedback.textContent = "Oops! Some of your selections are incorrect.";
-      feedback.className = "feedback incorrect";
-      score -= 5;
+      feedback.textContent="Oops! Some selections are incorrect.";
+      feedback.className="feedback incorrect";
+      score-=5;
     }
-    document.getElementById("score").textContent = score;
+    document.getElementById("score").textContent=score;
 
-    const nextBtn = document.getElementById("nextQ1Btn");
-    nextBtn.disabled = false;
+    const nextBtn=document.getElementById("nextQ1Btn");
+    nextBtn.disabled=false;
     nextBtn.classList.remove("disabled");
   };
 
   /*********************************************
-   * 6) Q2 Logic
+   * Q2 Logic
    *********************************************/
-  window.handleClickQ2 = function handleClickQ2(isCorrect) {
-    const feedback = document.getElementById("feedback2");
-    if (isCorrect) {
-      feedback.textContent = "Correct! Great job!";
-      feedback.className = "feedback correct";
-      score += 10;
+  window.handleClickQ2=function handleClickQ2(isCorrect){
+    const feedback=document.getElementById("feedback2");
+    if(isCorrect){
+      feedback.textContent="Correct! Great job!";
+      feedback.className="feedback correct";
+      score+=10;
     } else {
-      feedback.textContent = "Wrong answer!";
-      feedback.className = "feedback incorrect";
-      score -= 5;
+      feedback.textContent="Wrong answer!";
+      feedback.className="feedback incorrect";
+      score-=5;
     }
-    document.getElementById("score").textContent = score;
+    document.getElementById("score").textContent=score;
 
-    const nextBtn = document.getElementById("nextQ2Btn");
-    nextBtn.disabled = false;
+    const nextBtn=document.getElementById("nextQ2Btn");
+    nextBtn.disabled=false;
     nextBtn.classList.remove("disabled");
   };
 
   /*********************************************
-   * 7) Q3 Logic
+   * Q3 Logic
    *********************************************/
-  window.handleClickQ3 = function handleClickQ3(isCorrect) {
-    const feedback = document.getElementById("feedback3");
-    if (isCorrect) {
-      feedback.textContent = "Correct! Great job!";
-      feedback.className = "feedback correct";
-      score += 10;
+  window.handleClickQ3=function handleClickQ3(isCorrect){
+    const feedback=document.getElementById("feedback3");
+    if(isCorrect){
+      feedback.textContent="Correct! Great job!";
+      feedback.className="feedback correct";
+      score+=10;
     } else {
-      feedback.textContent = "Wrong area!";
-      feedback.className = "feedback incorrect";
-      score -= 5;
+      feedback.textContent="Wrong area!";
+      feedback.className="feedback incorrect";
+      score-=5;
     }
-    document.getElementById("score").textContent = score;
+    document.getElementById("score").textContent=score;
 
-    const nextBtn = document.getElementById("nextQ3Btn");
-    nextBtn.disabled = false;
+    const nextBtn=document.getElementById("nextQ3Btn");
+    nextBtn.disabled=false;
     nextBtn.classList.remove("disabled");
   };
 
   /*********************************************
-   * 8) Q4 (Drag & Drop)
+   * Q4 (Drag & Drop)
    *********************************************/
-  const draggableList = document.getElementById('draggable-list');
-  let dragItem = null;
-
-  if (draggableList) {
-    const listItems = [...draggableList.querySelectorAll('li')];
-    listItems.forEach(li => {
-      li.addEventListener('dragstart', dragStart);
-      li.addEventListener('dragend', dragEnd);
+  const draggableList=document.getElementById('draggable-list');
+  let dragItem=null;
+  if(draggableList){
+    const listItems=[...draggableList.querySelectorAll('li')];
+    listItems.forEach(li=>{
+      li.addEventListener('dragstart',dragStart);
+      li.addEventListener('dragend',dragEnd);
     });
-    draggableList.addEventListener('dragover', dragOver);
-    draggableList.addEventListener('drop', dropItem);
+    draggableList.addEventListener('dragover',dragOver);
+    draggableList.addEventListener('drop',dropItem);
   }
-
-  function dragStart(e) {
-    dragItem = this;
+  function dragStart(e){
+    dragItem=this;
     this.classList.add('dragging');
-    e.dataTransfer.setData('text/plain', '');
+    e.dataTransfer.setData('text/plain','');
   }
-  function dragEnd() {
+  function dragEnd(){
     this.classList.remove('dragging');
-    dragItem = null;
+    dragItem=null;
   }
-  function dragOver(e) {
+  function dragOver(e){ e.preventDefault(); }
+  function dropItem(e){
     e.preventDefault();
-  }
-  function dropItem(e) {
-    e.preventDefault();
-    if (dragItem) {
-      const listItems = [...draggableList.querySelectorAll('li:not(.dragging)')];
-      const afterElement = listItems.find(li => {
-        const rect = li.getBoundingClientRect();
-        return e.clientY < rect.top + rect.height / 2;
+    if(dragItem){
+      const listItems=[...draggableList.querySelectorAll('li:not(.dragging)')];
+      const afterElement=listItems.find(li=>{
+        const rect=li.getBoundingClientRect();
+        return e.clientY<rect.top+rect.height/2;
       });
-      if (!afterElement) {
+      if(!afterElement){
         draggableList.appendChild(dragItem);
       } else {
-        draggableList.insertBefore(dragItem, afterElement);
+        draggableList.insertBefore(dragItem,afterElement);
       }
     }
   }
+  window.checkOrderQ4=function checkOrderQ4(){
+    const feedback=document.getElementById("feedback4");
+    const correctOrder=['24','22','20','18'];
+    const liElements=document.querySelectorAll('#draggable-list li');
+    const userOrder=[...liElements].map(li=>li.getAttribute('data-value'));
 
-  window.checkOrderQ4 = function checkOrderQ4() {
-    const feedback = document.getElementById('feedback4');
-    const correctOrder = ['24','22','20','18'];
-    const liElements = document.querySelectorAll('#draggable-list li');
-    const userOrder = [...liElements].map(li => li.getAttribute('data-value'));
-
-    if (JSON.stringify(userOrder) === JSON.stringify(correctOrder)) {
-      feedback.textContent = "Correct order! Great job!";
-      feedback.className = "feedback correct";
-      score += 10;
+    if(JSON.stringify(userOrder)===JSON.stringify(correctOrder)){
+      feedback.textContent="Correct order! Great job!";
+      feedback.className="feedback correct";
+      score+=10;
     } else {
-      feedback.textContent = "Incorrect order. Smaller # = bigger gauge!";
-      feedback.className = "feedback incorrect";
-      score -= 5;
+      feedback.textContent="Incorrect order. Smaller #= bigger gauge!";
+      feedback.className="feedback incorrect";
+      score-=5;
     }
-    document.getElementById("score").textContent = score;
+    document.getElementById("score").textContent=score;
 
-    const nextBtn = document.getElementById("nextQ4Btn");
-    nextBtn.disabled = false;
+    const nextBtn=document.getElementById("nextQ4Btn");
+    nextBtn.disabled=false;
     nextBtn.classList.remove("disabled");
   };
 
   /*********************************************
-   * 9) Submit Score + Admin
+   * Q5..Q9 Build + Logic
    *********************************************/
-  window.submitToLeaderboard = async function submitToLeaderboard() {
-    try {
-      await addDoc(collection(db, "scores"), {
+  // Q5
+  const q5Data={
+    question:"In which position will you place the patient when removing an external Jugular IV?",
+    answers:[
+      { text:"High Fowlers", correct:false },
+      { text:"Supine",      correct:true },
+      { text:"Semi Fowlers", correct:false },
+      { text:"Trendelenburg", correct:false }
+    ]
+  };
+  function buildQ5(){
+    const container=document.getElementById("q5-options");
+    container.innerHTML="";
+    const arr=[...q5Data.answers];
+    shuffleArray(arr);
+    arr.forEach(ans=>{
+      const btn=document.createElement("button");
+      btn.textContent=ans.text;
+      btn.onclick=()=>handleClickQ5(ans.correct);
+      container.appendChild(btn);
+    });
+  }
+  function handleClickQ5(isCorrect){
+    const feedback=document.getElementById("feedback5");
+    if(isCorrect){
+      feedback.textContent="Correct! Great job!";
+      feedback.className="feedback correct";
+      score+=10;
+    } else {
+      feedback.textContent="Wrong answer!";
+      feedback.className="feedback incorrect";
+      score-=5;
+    }
+    document.getElementById("score").textContent=score;
+    const nextBtn=document.getElementById("nextQ5Btn");
+    nextBtn.disabled=false;
+    nextBtn.classList.remove("disabled");
+  }
+
+  // Q6 (IO T/F)
+  const q6Data={
+    question:"Any medication, contrast, fluid, or blood can be given through an IO Catheter?",
+    answers:[
+      { text:"True",  correct:true },
+      { text:"False", correct:false }
+    ]
+  };
+  function buildQ6(){
+    const container=document.getElementById("q6-options");
+    container.innerHTML="";
+    const arr=[...q6Data.answers];
+    shuffleArray(arr);
+    arr.forEach(ans=>{
+      const btn=document.createElement("button");
+      btn.textContent=ans.text;
+      btn.onclick=()=>handleClickQ6(ans.correct);
+      container.appendChild(btn);
+    });
+  }
+  function handleClickQ6(isCorrect){
+    const feedback=document.getElementById("feedback6");
+    if(isCorrect){
+      feedback.textContent="Correct! Great job!";
+      feedback.className="feedback correct";
+      score+=10;
+    } else {
+      feedback.textContent="Wrong answer!";
+      feedback.className="feedback incorrect";
+      score-=5;
+    }
+    document.getElementById("score").textContent=score;
+    const nextBtn=document.getElementById("nextQ6Btn");
+    nextBtn.disabled=false;
+    nextBtn.classList.remove("disabled");
+  }
+
+  // Q7 (multi-select)
+  const q7Data={
+    question:"A power port is required for contrast injection. What are the appropriate identification methods? (Select all that apply)",
+    answers:[
+      { value:"A", label:"Guess based on the patient's history", correct:false },
+      { value:"B", label:"Letter 'CT' visible on power port in CXR", correct:true },
+      { value:"C", label:"Verify post-procedure report or port ID card/bracelet", correct:true },
+      { value:"D", label:"Palpation of the 3 identifying bumps", correct:true },
+      { value:"E", label:"Ask the nurse for their opinion", correct:false },
+      { value:"F", label:"Rely on previous imaging w/o confirming current status", correct:false }
+    ]
+  };
+  function buildQ7(){
+    const form=document.getElementById("q7-form");
+    form.innerHTML="";
+    const arr=[...q7Data.answers];
+    shuffleArray(arr);
+
+    arr.forEach(ans=>{
+      const label=document.createElement("label");
+      label.innerHTML=`<input type="checkbox" name="q7answer" value="${ans.label}"/> ${ans.label}`;
+      form.appendChild(label);
+      form.appendChild(document.createElement("br"));
+    });
+
+    const submitBtn=document.createElement("button");
+    submitBtn.type="button";
+    submitBtn.textContent="Submit";
+    submitBtn.onclick=checkAnswersQ7;
+    form.appendChild(submitBtn);
+  }
+  function checkAnswersQ7(){
+    const selected=document.querySelectorAll(`#q7-form input[name="q7answer"]:checked`);
+    const selectedLabels=[...selected].map(s=>s.value);
+
+    let error=false;
+    q7Data.answers.forEach(ans=>{
+      if(ans.correct && !selectedLabels.includes(ans.label)) error=true;
+      if(!ans.correct && selectedLabels.includes(ans.label)) error=true;
+    });
+
+    const feedback=document.getElementById("feedback7");
+    if(!error){
+      feedback.textContent="Correct! Great job!";
+      feedback.className="feedback correct";
+      score+=10;
+    } else {
+      feedback.textContent="Some selections were incorrect or missing.";
+      feedback.className="feedback incorrect";
+      score-=5;
+    }
+    document.getElementById("score").textContent=score;
+    const nextBtn=document.getElementById("nextQ7Btn");
+    nextBtn.disabled=false;
+    nextBtn.classList.remove("disabled");
+  }
+
+  // Q8 (T/F midline)
+  const q8Data={
+    question:"A midline is considered a CVAD",
+    answers:[
+      { text:"True",  correct:false },
+      { text:"False", correct:true }
+    ]
+  };
+  function buildQ8(){
+    const container=document.getElementById("q8-options");
+    container.innerHTML="";
+    const arr=[...q8Data.answers];
+    shuffleArray(arr);
+
+    arr.forEach(ans=>{
+      const btn=document.createElement("button");
+      btn.textContent=ans.text;
+      btn.onclick=()=>handleClickQ8(ans.correct);
+      container.appendChild(btn);
+    });
+  }
+  function handleClickQ8(isCorrect){
+    const feedback=document.getElementById("feedback8");
+    if(isCorrect){
+      feedback.textContent="Correct! Great job!";
+      feedback.className="feedback correct";
+      score+=10;
+    } else {
+      feedback.textContent="Wrong answer!";
+      feedback.className="feedback incorrect";
+      score-=5;
+    }
+    document.getElementById("score").textContent=score;
+
+    const nextBtn=document.getElementById("nextQ8Btn");
+    nextBtn.disabled=false;
+    nextBtn.classList.remove("disabled");
+  }
+
+  // Q9 multiple choice
+  const q9Data={
+    question:"Before accessing any peripheral or central line you should first?",
+    answers:[
+      { text:"Scrub the hub with an alcohol pad for 5 seconds and allow to dry", correct:true },
+      { text:"Wipe the hub with a dry gauze pad for 3 seconds", correct:false },
+      { text:"Ask the patient if the hub looks clean enough", correct:false },
+      { text:"Rinse the hub with water if it looks dirty", correct:false }
+    ]
+  };
+  function buildQ9(){
+    const container=document.getElementById("q9-options");
+    container.innerHTML="";
+    const arr=[...q9Data.answers];
+    shuffleArray(arr);
+
+    arr.forEach(ans=>{
+      const btn=document.createElement("button");
+      btn.textContent=ans.text;
+      btn.onclick=()=>handleClickQ9(ans.correct);
+      container.appendChild(btn);
+    });
+  }
+  function handleClickQ9(isCorrect){
+    const feedback=document.getElementById("feedback9");
+    if(isCorrect){
+      feedback.textContent="Correct! Great job!";
+      feedback.className="feedback correct";
+      score+=10;
+    } else {
+      feedback.textContent="Wrong answer!";
+      feedback.className="feedback incorrect";
+      score-=5;
+    }
+    document.getElementById("score").textContent=score;
+
+    const nextBtn=document.getElementById("nextQ9Btn");
+    nextBtn.disabled=false;
+    nextBtn.classList.remove("disabled");
+  }
+
+  /*********************************************
+   * Submit Score & Leaderboard
+   *********************************************/
+  window.submitToLeaderboard = async function submitToLeaderboard(){
+    try{
+      await addDoc(collection(db,"scores"),{
         username: currentUser,
         score,
-        date: new Date().toISOString()
+        date:new Date().toISOString()
       });
-      alert("Score submitted to leaderboard!");
-    } catch (err) {
-      console.error("Error saving score:", err);
-      alert("Error saving score: " + err.message);
+      alert("Score submitted!");
+    } catch(err){
+      console.error("Error saving score:",err);
+      alert("Error saving score:"+err.message);
     }
   };
 
-  window.clearLeaderboard = async function clearLeaderboard() {
-    try {
-      const snap = await getDocs(collection(db, "scores"));
-      for (const docSnap of snap.docs) {
+  window.clearLeaderboard=async function clearLeaderboard(){
+    try{
+      const snap=await getDocs(collection(db,"scores"));
+      for(const docSnap of snap.docs){
         await deleteDoc(docSnap.ref);
       }
       alert("Leaderboard cleared!");
       loadLeaderboard();
-    } catch (err) {
-      console.error("Error clearing leaderboard:", err);
-      alert("Could not clear leaderboard: " + err.message);
+    } catch(err){
+      console.error("Error clearing leaderboard:",err);
+      alert("Could not clear leaderboard:"+err.message);
     }
   };
 
-  window.adminLogin = function adminLogin() {
-    const pass = prompt("Enter Admin Password (demo only):");
-    if (pass === "admin123") {
-      document.getElementById("adminSection").style.display = "block";
+  window.adminLogin=function adminLogin(){
+    const pass=prompt("Enter Admin Password (demo only):");
+    if(pass==="admin123"){
+      document.getElementById("adminSection").style.display="block";
       loadLeaderboard();
     } else {
       alert("Incorrect admin password!");
     }
   };
 
-  async function loadLeaderboard() {
-    const tbody = document.getElementById("leaderboardBody");
-    tbody.innerHTML = "Loading...";
+  async function loadLeaderboard(){
+    const tbody=document.getElementById("leaderboardBody");
+    tbody.innerHTML="Loading...";
 
-    try {
-      const qRef = query(collection(db, "scores"), orderBy("date", "desc"));
-      const snapshot = await getDocs(qRef);
+    try{
+      const qRef=query(collection(db,"scores"),orderBy("date","desc"));
+      const snapshot=await getDocs(qRef);
 
-      let html = "";
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        html += `<tr>
-          <td>${data.username}</td>
-          <td>${data.score}</td>
-          <td>${data.date}</td>
-        </tr>`;
+      let html="";
+      snapshot.forEach(doc=>{
+        const data=doc.data();
+        html+=`
+          <tr>
+            <td>${data.username}</td>
+            <td>${data.score}</td>
+            <td>${data.date}</td>
+          </tr>`;
       });
-      tbody.innerHTML = html || "<tr><td colspan='3'>No scores found</td></tr>";
-    } catch (err) {
-      console.error("Error loading leaderboard:", err);
-      tbody.innerHTML = "<tr><td colspan='3'>Error loading data</td></tr>";
+      tbody.innerHTML=html||"<tr><td colspan='3'>No scores found</td></tr>";
+    } catch(err){
+      console.error("Error loading leaderboard:",err);
+      tbody.innerHTML="<tr><td colspan='3'>Error loading data</td></tr>";
     }
   }
 </script>
-
 </body>
 </html>
