@@ -251,8 +251,17 @@
     </ul>
     <button onclick="checkOrderQ4()">Submit</button>
     <div id="feedback4" class="feedback"></div>
-    <button id="nextQ4Btn" class="disabled" onclick="manualNext('q4','finalMessage')" disabled>Next</button>
+    <button id="nextQ4Btn" class="disabled" onclick="manualNext('q4','q5')" disabled>Next</button>
   </div>
+
+  <!-- Question 5 (Select All That Apply) -->
+<div class="question" id="q5">
+  <h2 id="q5-title"></h2>
+  <form id="q5-form"></form>
+  <div id="feedback5" class="feedback"></div>
+  <button id="nextQ5Btn" class="disabled" onclick="manualNext('q5','finalMessage')" disabled>Next</button>
+</div>
+
 
   <!-- Final Message -->
   <div id="finalMessage" class="question">
@@ -339,6 +348,18 @@
     ]
   };
 
+  const q5Data = {
+  question: "In which position will you place the patient when removing an external Jugular IV? (Select all that apply)",
+  answers: [
+    { value: "incorrect", label: "High Fowlers", image: "High-Fowler.png" },
+    { value: "incorrect", label: "Semi Fowlers", image: "Semi-Fowler.png" },
+    { value: "correct1", label: "Supine", image: "Supine.png" },
+    { value: "correct2", label: "Trendelenburg", image: "Trendelenburg.png" }
+  ],
+  correctSet: ["correct1", "correct2"]
+};
+
+
   /*********************************************
    * 3) START + TIMER
    *********************************************/
@@ -351,6 +372,7 @@
 
     buildQ1();
     buildQ2();
+    buildQ5();
     startTimer("q1", "q2");
   };
 
@@ -382,7 +404,8 @@
         let upcomingNext;
         if (nextId === "q2") upcomingNext = "q3";
         else if (nextId === "q3") upcomingNext = "q4";
-        else if (nextId === "q4") upcomingNext = "finalMessage";
+        else if (nextId === "q4") upcomingNext = "q5";
+        else if (nextId === "q5") upcomingNext = "finalMessage";
         startTimer(nextId, upcomingNext);
       } else {
         document.getElementById("finalScore").textContent = score;
@@ -391,10 +414,11 @@
   }
 
   /*********************************************
-   * 4) BUILD Q1 & Q2
+   * 4) BUILD Q1, Q2, Q5
    *********************************************/
   function shuffleArray(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
+    for (let i = arr.length - 1; i > 0; i--)
+        {
       const j = Math.floor(Math.random() * (i + 1));
       [arr[i], arr[j]] = [arr[j], arr[i]];
     }
@@ -408,7 +432,7 @@
     const form = document.getElementById("q1-form");
     form.innerHTML = "";
 
-    answers.forEach(ans => {
+    answers.forEach((ans) => {
       const label = document.createElement("label");
       label.innerHTML = `<input type="checkbox" name="answer" value="${ans.value}" /> ${ans.label}`;
       form.appendChild(label);
@@ -430,7 +454,7 @@
     const container = document.getElementById("q2-options");
     container.innerHTML = "";
 
-    arr.forEach(ans => {
+    arr.forEach((ans) => {
       const btn = document.createElement("button");
       btn.textContent = ans.text;
       btn.onclick = () => handleClickQ2(ans.correct);
@@ -438,19 +462,62 @@
     });
   }
 
+function buildQ5() {
+  document.getElementById("q5-title").textContent = q5Data.question; // Set question text
+  const answers = [...q5Data.answers]; // Copy answer array
+
+  const form = document.getElementById("q5-form");
+  form.innerHTML = ""; // Clear previous content
+
+  // Loop through answers to create checkboxes with images
+  answers.forEach((ans) => {
+    const container = document.createElement("div");
+    container.style.display = "flex";
+    container.style.alignItems = "center";
+    container.style.marginBottom = "15px";
+
+    const img = document.createElement("img");
+    img.src = ans.image;
+    img.alt = ans.label;
+    img.style.width = "100px"; // Adjust size as needed
+    img.style.height = "auto";
+    img.style.marginRight = "10px";
+    img.style.borderRadius = "8px"; // Optional: add some styling
+    img.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.2)";
+
+    const label = document.createElement("label");
+    label.style.display = "flex";
+    label.style.alignItems = "center";
+    label.innerHTML = `<input type="checkbox" name="answer" value="${ans.value}" style="margin-right: 10px;" /> ${ans.label}`;
+
+    container.appendChild(img);
+    container.appendChild(label);
+    form.appendChild(container);
+  });
+
+  // Create and append Submit button
+  const submitBtn = document.createElement("button");
+  submitBtn.textContent = "Submit";
+  submitBtn.type = "button";
+  submitBtn.onclick = checkAnswersQ5; // Link submit to check function
+  form.appendChild(submitBtn);
+}
+
+
+
   /*********************************************
-   * 5) Q1 Logic
+   * 5) CHECK ANSWERS Q1, Q5
    *********************************************/
   window.checkAnswersQ1 = function checkAnswersQ1() {
     const selected = document.querySelectorAll(`#q1 input[name="answer"]:checked`);
-    const selectedValues = [...selected].map(i => i.value);
+    const selectedValues = [...selected].map((i) => i.value);
     const feedback = document.getElementById("feedback1");
 
-    const correctSet = ["correct1", "correct2", "correct3", "correct4"];
+    const correctSet = q1Data.correctSet;
     const isCorrect =
-      correctSet.every(a => selectedValues.includes(a)) &&
-      !selectedValues.includes("incorrect") &&
-      selectedValues.length === correctSet.length;
+      correctSet.every((a) => selectedValues.includes(a)) &&
+      selectedValues.length === correctSet.length &&
+      !selectedValues.some((val) => val === "incorrect");
 
     if (isCorrect) {
       feedback.textContent = "Correct! Great job!";
@@ -467,9 +534,82 @@
     nextBtn.disabled = false;
     nextBtn.classList.remove("disabled");
   };
+  
+
+window.handleClickQ3 = function handleClickQ3(isCorrect) {
+  const feedback = document.getElementById("feedback3");
+  if (isCorrect) {
+    feedback.textContent = "Correct! Great job!";
+    feedback.className = "feedback correct";
+    score += 10;
+  } else {
+    feedback.textContent = "Wrong area!";
+    feedback.className = "feedback incorrect";
+    score -= 5;
+  }
+  document.getElementById("score").textContent = score;
+
+  // Enable Next Button
+  const nextBtn = document.getElementById("nextQ3Btn");
+  nextBtn.disabled = false;
+  nextBtn.classList.remove("disabled");
+};
+
+
+window.checkOrderQ4 = function checkOrderQ4() {
+  const feedback = document.getElementById('feedback4');
+  const correctOrder = ['24','22','20','18'];
+  const liElements = document.querySelectorAll('#draggable-list li');
+  const userOrder = [...liElements].map(li => li.getAttribute('data-value'));
+
+  if (JSON.stringify(userOrder) === JSON.stringify(correctOrder)) {
+    feedback.textContent = "Correct order! Great job!";
+    feedback.className = "feedback correct";
+    score += 10;
+  } else {
+    feedback.textContent = "Incorrect order. Smaller # = bigger gauge!";
+    feedback.className = "feedback incorrect";
+    score -= 5;
+  }
+  document.getElementById("score").textContent = score;
+
+  // Enable Next Button
+  const nextBtn = document.getElementById("nextQ4Btn");
+  nextBtn.disabled = false;
+  nextBtn.classList.remove("disabled");
+};
+
+
+
+  window.checkAnswersQ5 = function checkAnswersQ5() {
+    const selected = document.querySelectorAll(`#q5 input[name="answer"]:checked`);
+    const selectedValues = [...selected].map((i) => i.value);
+    const feedback = document.getElementById("feedback5");
+
+    const correctSet = q5Data.correctSet;
+    const isCorrect =
+      correctSet.every((a) => selectedValues.includes(a)) &&
+      selectedValues.length === correctSet.length &&
+      !selectedValues.some((val) => val === "incorrect");
+
+    if (isCorrect) {
+      feedback.textContent = "Correct! Well done!";
+      feedback.className = "feedback correct";
+      score += 10;
+    } else {
+      feedback.textContent = "Oops! Some of your selections are incorrect.";
+      feedback.className = "feedback incorrect";
+      score -= 5;
+    }
+    document.getElementById("score").textContent = score;
+
+    const nextBtn = document.getElementById("nextQ5Btn");
+    nextBtn.disabled = false;
+    nextBtn.classList.remove("disabled");
+  };
 
   /*********************************************
-   * 6) Q2 Logic
+   * 6) HANDLE Q2 LOGIC
    *********************************************/
   window.handleClickQ2 = function handleClickQ2(isCorrect) {
     const feedback = document.getElementById("feedback2");
@@ -488,159 +628,7 @@
     nextBtn.disabled = false;
     nextBtn.classList.remove("disabled");
   };
-
-  /*********************************************
-   * 7) Q3 Logic
-   *********************************************/
-  window.handleClickQ3 = function handleClickQ3(isCorrect) {
-    const feedback = document.getElementById("feedback3");
-    if (isCorrect) {
-      feedback.textContent = "Correct! Great job!";
-      feedback.className = "feedback correct";
-      score += 10;
-    } else {
-      feedback.textContent = "Wrong area!";
-      feedback.className = "feedback incorrect";
-      score -= 5;
-    }
-    document.getElementById("score").textContent = score;
-
-    const nextBtn = document.getElementById("nextQ3Btn");
-    nextBtn.disabled = false;
-    nextBtn.classList.remove("disabled");
-  };
-
-  /*********************************************
-   * 8) Q4 (Drag & Drop)
-   *********************************************/
-  const draggableList = document.getElementById('draggable-list');
-  let dragItem = null;
-
-  if (draggableList) {
-    const listItems = [...draggableList.querySelectorAll('li')];
-    listItems.forEach(li => {
-      li.addEventListener('dragstart', dragStart);
-      li.addEventListener('dragend', dragEnd);
-    });
-    draggableList.addEventListener('dragover', dragOver);
-    draggableList.addEventListener('drop', dropItem);
-  }
-
-  function dragStart(e) {
-    dragItem = this;
-    this.classList.add('dragging');
-    e.dataTransfer.setData('text/plain', '');
-  }
-  function dragEnd() {
-    this.classList.remove('dragging');
-    dragItem = null;
-  }
-  function dragOver(e) {
-    e.preventDefault();
-  }
-  function dropItem(e) {
-    e.preventDefault();
-    if (dragItem) {
-      const listItems = [...draggableList.querySelectorAll('li:not(.dragging)')];
-      const afterElement = listItems.find(li => {
-        const rect = li.getBoundingClientRect();
-        return e.clientY < rect.top + rect.height / 2;
-      });
-      if (!afterElement) {
-        draggableList.appendChild(dragItem);
-      } else {
-        draggableList.insertBefore(dragItem, afterElement);
-      }
-    }
-  }
-
-  window.checkOrderQ4 = function checkOrderQ4() {
-    const feedback = document.getElementById('feedback4');
-    const correctOrder = ['24','22','20','18'];
-    const liElements = document.querySelectorAll('#draggable-list li');
-    const userOrder = [...liElements].map(li => li.getAttribute('data-value'));
-
-    if (JSON.stringify(userOrder) === JSON.stringify(correctOrder)) {
-      feedback.textContent = "Correct order! Great job!";
-      feedback.className = "feedback correct";
-      score += 10;
-    } else {
-      feedback.textContent = "Incorrect order. Smaller # = bigger gauge!";
-      feedback.className = "feedback incorrect";
-      score -= 5;
-    }
-    document.getElementById("score").textContent = score;
-
-    const nextBtn = document.getElementById("nextQ4Btn");
-    nextBtn.disabled = false;
-    nextBtn.classList.remove("disabled");
-  };
-
-  /*********************************************
-   * 9) Submit Score + Admin
-   *********************************************/
-  window.submitToLeaderboard = async function submitToLeaderboard() {
-    try {
-      await addDoc(collection(db, "scores"), {
-        username: currentUser,
-        score,
-        date: new Date().toISOString()
-      });
-      alert("Score submitted to leaderboard!");
-    } catch (err) {
-      console.error("Error saving score:", err);
-      alert("Error saving score: " + err.message);
-    }
-  };
-
-  window.clearLeaderboard = async function clearLeaderboard() {
-    try {
-      const snap = await getDocs(collection(db, "scores"));
-      for (const docSnap of snap.docs) {
-        await deleteDoc(docSnap.ref);
-      }
-      alert("Leaderboard cleared!");
-      loadLeaderboard();
-    } catch (err) {
-      console.error("Error clearing leaderboard:", err);
-      alert("Could not clear leaderboard: " + err.message);
-    }
-  };
-
-  window.adminLogin = function adminLogin() {
-    const pass = prompt("Enter Admin Password (demo only):");
-    if (pass === "admin123") {
-      document.getElementById("adminSection").style.display = "block";
-      loadLeaderboard();
-    } else {
-      alert("Incorrect admin password!");
-    }
-  };
-
-  async function loadLeaderboard() {
-    const tbody = document.getElementById("leaderboardBody");
-    tbody.innerHTML = "Loading...";
-
-    try {
-      const qRef = query(collection(db, "scores"), orderBy("date", "desc"));
-      const snapshot = await getDocs(qRef);
-
-      let html = "";
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        html += `<tr>
-          <td>${data.username}</td>
-          <td>${data.score}</td>
-          <td>${data.date}</td>
-        </tr>`;
-      });
-      tbody.innerHTML = html || "<tr><td colspan='3'>No scores found</td></tr>";
-    } catch (err) {
-      console.error("Error loading leaderboard:", err);
-      tbody.innerHTML = "<tr><td colspan='3'>Error loading data</td></tr>";
-    }
-  }
 </script>
-
 </body>
 </html>
+
