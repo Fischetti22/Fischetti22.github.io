@@ -225,7 +225,7 @@
     <br/>
     <strong>Player:</strong> <span id="playerName"></span>
   </div>
-  <div id="timer">Time Left: 60s</div>
+  <div id="timer">Time Left: 90s</div>
 
   <!-- Question 1 (checkboxes) -->
   <div class="question active" id="q1">
@@ -279,11 +279,7 @@
 <div class="question" id="youtubeScreen">
   <h2>Watch this Video Before Proceeding</h2>
   <div style="text-align: center; margin: 20px 0;">
-    
-   <iframe width="560" height="315" src="https://www.youtube.com/embed/gCabB1lo2yg?si=ZVORCWK9wZ-SvnYb&amp;start=16&end=130" 
-title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;
- web-share"referrerpolicy="strict-origin-when-cross-origin"allowfullscreen></iframe>
-    
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/gCabB1lo2yg?si=ZVORCWK9wZ-SvnYb&amp;start=16&end=130" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
   </div>
   <button id="nextYoutubeBtn" onclick="manualNext('youtubeScreen', 'q5')">Next</button>
 </div>
@@ -413,7 +409,7 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
   };
 
   function startTimer(currentId, nextId) {
-    timeLeft = 60;
+    timeLeft = 90;
     clearInterval(timerId);
 
     timerId = setInterval(() => {
@@ -427,9 +423,20 @@ title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; cli
   }
 
   window.manualNext = function manualNext(currentId, nextId) {
+  const passphrase = prompt("Enter the passphrase to proceed:");
+  
+  // Replace 'YourSecretPassphrase' with your actual passphrase
+  if (passphrase === "next") {
+    // Allow progression to the next question
     clearInterval(timerId);
     moveToNextQuestion(currentId, nextId);
-  };
+  } else {
+    // If the passphrase is incorrect, show an alert
+    alert("Incorrect passphrase. Please try again.");
+  }
+};
+
+  
 
   function moveToNextQuestion(currentId, nextId) {
   document.getElementById(currentId).classList.remove("active");
