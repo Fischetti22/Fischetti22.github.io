@@ -274,10 +274,11 @@
 
   <!-- Final Message -->
   <div id="finalMessage" class="question">
-    <h2>Congratulations!</h2>
-    <p>Your final score is: <strong><span id="finalScore"></span></strong></p>
-    <p><button onclick="submitToLeaderboard()">Submit Score to Leaderboard</button></p>
-  </div>
+  <h2>Congratulations!</h2>
+  <p>Your final score is: <strong><span id="finalScore"></span></strong></p>
+  <p><button onclick="submitToLeaderboard()">Submit Score to Leaderboard</button></p>
+</div>
+
 
   <!-- Admin Section: Leaderboard -->
   <div id="adminSection">
@@ -638,45 +639,73 @@ window.checkOrderQ4 = function checkOrderQ4() {
     nextBtn.classList.remove("disabled");
   };
   
-  window.adminLogin = function adminLogin() {
-  const pass = prompt("Enter Admin Password (demo only):");
-  if (pass === "admin123") {
-    const adminSection = document.getElementById("adminSection");
-    if (adminSection) {
-      adminSection.style.display = "block"; // Show the admin section
-      loadLeaderboard(); // Load leaderboard if implemented
-    } else {
-      console.error("Admin section not found in the DOM.");
+  /*********************************************
+   * Submit Score & Leaderboard Functions
+   *********************************************/
+  window.submitToLeaderboard = async function submitToLeaderboard() {
+    try {
+      await addDoc(collection(db, "scores"), {
+        username: currentUser,
+        score,
+        date: new Date().toISOString()
+      });
+      alert("Score submitted!");
+    } catch (err) {
+      console.error("Error saving score:", err);
+      alert("Error saving score: " + err.message);
     }
-  } else {
-    alert("Incorrect admin password!");
+  };
+
+  window.clearLeaderboard = async function clearLeaderboard() {
+    try {
+      const snap = await getDocs(collection(db, "scores"));
+      for (const docSnap of snap.docs) {
+        await deleteDoc(docSnap.ref);
+      }
+      alert("Leaderboard cleared!");
+      loadLeaderboard();
+    } catch (err) {
+      console.error("Error clearing leaderboard:", err);
+      alert("Could not clear leaderboard: " + err.message);
+    }
+  };
+
+  window.adminLogin = function adminLogin() {
+    const pass = prompt("Enter Admin Password (demo only):");
+    if (pass === "admin123") {
+      document.getElementById("adminSection").style.display = "block";
+      loadLeaderboard();
+    } else {
+      alert("Incorrect admin password!");
+    }
+  };
+
+  async function loadLeaderboard() {
+    const tbody = document.getElementById("leaderboardBody");
+    tbody.innerHTML = "Loading...";
+
+    try {
+      const qRef = query(collection(db, "scores"), orderBy("date", "desc"));
+      const snapshot = await getDocs(qRef);
+
+      let html = "";
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        html += `<tr>
+          <td>${data.username}</td>
+          <td>${data.score}</td>
+          <td>${new Date(data.date).toLocaleString()}</td>
+        </tr>`;
+      });
+      tbody.innerHTML = html || "<tr><td colspan='3'>No scores found</td></tr>";
+    } catch (err) {
+      console.error("Error loading leaderboard:", err);
+      tbody.innerHTML = "<tr><td colspan='3'>Error loading data</td></tr>";
+    }
   }
-};
 
 
-async function loadLeaderboard() {
-  const tbody = document.getElementById("leaderboardBody");
-  tbody.innerHTML = "Loading...";
 
-  try {
-    const qRef = query(collection(db, "scores"), orderBy("date", "desc"));
-    const snapshot = await getDocs(qRef);
-
-    let html = "";
-    snapshot.forEach((doc) => {
-      const data = doc.data();
-      html += `<tr>
-        <td>${data.username}</td>
-        <td>${data.score}</td>
-        <td>${new Date(data.date).toLocaleString()}</td>
-      </tr>`;
-    });
-    tbody.innerHTML = html || "<tr><td colspan='3'>No scores found</td></tr>";
-  } catch (err) {
-    console.error("Error loading leaderboard:", err);
-    tbody.innerHTML = "<tr><td colspan='3'>Error loading data</td></tr>";
-  }
-}
 
 </script>
 
