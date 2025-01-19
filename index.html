@@ -180,6 +180,15 @@
     .dragging {
       opacity: 0.5;
     }
+    
+    #q5-form img {
+  border-radius: 8px;
+  width: 100px;
+  height: auto;
+  margin-right: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
   </style>
 </head>
 <body>
@@ -628,7 +637,49 @@ window.checkOrderQ4 = function checkOrderQ4() {
     nextBtn.disabled = false;
     nextBtn.classList.remove("disabled");
   };
+  
+  window.adminLogin = function adminLogin() {
+  const pass = prompt("Enter Admin Password (demo only):");
+  if (pass === "admin123") {
+    const adminSection = document.getElementById("adminSection");
+    if (adminSection) {
+      adminSection.style.display = "block"; // Show the admin section
+      loadLeaderboard(); // Load leaderboard if implemented
+    } else {
+      console.error("Admin section not found in the DOM.");
+    }
+  } else {
+    alert("Incorrect admin password!");
+  }
+};
+
+
+async function loadLeaderboard() {
+  const tbody = document.getElementById("leaderboardBody");
+  tbody.innerHTML = "Loading...";
+
+  try {
+    const qRef = query(collection(db, "scores"), orderBy("date", "desc"));
+    const snapshot = await getDocs(qRef);
+
+    let html = "";
+    snapshot.forEach((doc) => {
+      const data = doc.data();
+      html += `<tr>
+        <td>${data.username}</td>
+        <td>${data.score}</td>
+        <td>${new Date(data.date).toLocaleString()}</td>
+      </tr>`;
+    });
+    tbody.innerHTML = html || "<tr><td colspan='3'>No scores found</td></tr>";
+  } catch (err) {
+    console.error("Error loading leaderboard:", err);
+    tbody.innerHTML = "<tr><td colspan='3'>Error loading data</td></tr>";
+  }
+}
+
 </script>
+
 </body>
 </html>
 
