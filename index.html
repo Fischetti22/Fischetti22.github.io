@@ -260,8 +260,27 @@
     </ul>
     <button onclick="checkOrderQ4()">Submit</button>
     <div id="feedback4" class="feedback"></div>
-    <button id="nextQ4Btn" class="disabled" onclick="manualNext('q4','q5')" disabled>Next</button>
+    <button id="nextQ4Btn" class="disabled" onclick="manualNext('q4', 'youtubeScreen')" disabled>Next</button>
+
   </div>
+  
+  <!-- Intermediate Screen -->
+<div class="question" id="youtubeScreen">
+  <h2>Watch this Video Before Proceeding</h2>
+  <div style="text-align: center; margin: 20px 0;">
+    <iframe
+      width="560"
+      height="315"
+      src="https://youtu.be/gCabB1lo2yg?si=mmKsdRe738FBdWly"
+      title="YouTube video"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  </div>
+  <button id="nextYoutubeBtn" onclick="manualNext('youtubeScreen', 'q5')">Next</button>
+</div>
+
 
   <!-- Question 5 (Select All That Apply) -->
 <div class="question" id="q5">
@@ -406,22 +425,26 @@
   };
 
   function moveToNextQuestion(currentId, nextId) {
-    document.getElementById(currentId).classList.remove("active");
-    const nextQ = document.getElementById(nextId);
-    if (nextQ) {
-      nextQ.classList.add("active");
-      if (nextId !== "finalMessage") {
-        let upcomingNext;
-        if (nextId === "q2") upcomingNext = "q3";
-        else if (nextId === "q3") upcomingNext = "q4";
-        else if (nextId === "q4") upcomingNext = "q5";
-        else if (nextId === "q5") upcomingNext = "finalMessage";
-        startTimer(nextId, upcomingNext);
-      } else {
-        document.getElementById("finalScore").textContent = score;
-      }
+  document.getElementById(currentId).classList.remove("active");
+  const nextQ = document.getElementById(nextId);
+  if (nextQ) {
+    nextQ.classList.add("active");
+    if (nextId === "youtubeScreen") {
+      // No timer for YouTube screen
+    } else if (nextId !== "finalMessage") {
+      let upcomingNext;
+      if (nextId === "q2") upcomingNext = "q3";
+      else if (nextId === "q3") upcomingNext = "q4";
+      else if (nextId === "q4") upcomingNext = "youtubeScreen"; // Navigate to the YouTube screen
+      else if (nextId === "youtubeScreen") upcomingNext = "q5"; // Navigate to Question 5
+      else if (nextId === "q5") upcomingNext = "finalMessage";
+      startTimer(nextId, upcomingNext);
+    } else {
+      document.getElementById("finalScore").textContent = score;
     }
   }
+}
+
 
   /*********************************************
    * 4) BUILD Q1, Q2, Q5
